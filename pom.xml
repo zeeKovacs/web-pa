@@ -27,15 +27,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <!-- Only using ScriptUtils class. -->
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.jdbc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

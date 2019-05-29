@@ -46,28 +46,39 @@ create trigger total_order_price
 after insert or delete on order_item for each row
 execute procedure total_order_price();
 
-insert into users(name, email, role, password, phone_number) values(
-	'Kovacs Zoltan',
-	'zolee95@gmail.com',
-	'admin',
-	'88888888',
-	'+36/70-328-6384'
-);
+CREATE OR REPLACE FUNCTION add_user(name text, email text, role text, password varchar(8), phone_number varchar(15))
+RETURNS void AS '
+BEGIN
+  INSERT INTO users(name, email, role, password, phone_number) VALUES (name, email, role, password, phone_number);
+END;
+' LANGUAGE plpgsql;
 
-insert into products(name, availability, unit, price) values(
-	'tomato',
-	true,
-	'kg',
-	800	
-);
+CREATE OR REPLACE FUNCTION add_product(name text, availability boolean, unit text, price numeric)
+RETURNS void AS '
+BEGIN
+  INSERT INTO products(name, availability, unit, price) VALUES (name, availability, unit, price);
+END;
+' LANGUAGE plpgsql;
 
-insert into orders(user_id) values(
-	1
-);
+CREATE OR REPLACE FUNCTION add_order(user_id int)
+RETURNS void AS '
+BEGIN
+  INSERT INTO orders(user_id) VALUES (user_id);
+END;
+' LANGUAGE plpgsql;
 
-insert into order_item (order_id, product_id, item_quantity, item_price) values(
-	1,
-	1,
-	4,
-	2 * (select price from products where id = 1)
-);
+CREATE OR REPLACE FUNCTION add_order_item(order_id int, product_id int, item_quantity int)
+RETURNS void AS '
+BEGIN
+  INSERT INTO order_item(order_id, product_id, item_quantity, item_price) VALUES (order_id, product_id, item_quantity, 2 * (select price from products where id = product_id));
+END;
+' LANGUAGE plpgsql;
+
+select add_user('Csontos Julia', 'csontos.julia@freemail.hu', 'admin', '88888888', '+36/70-506-7039');
+select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'admin', '88888888', '+36/70-328-6384');
+
+select add_product('tomato', true, 'kg', 800);
+
+select add_order(1);
+
+select add_order_item(1, 1, 4);

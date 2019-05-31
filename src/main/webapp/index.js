@@ -5,8 +5,7 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 let loginContentDivEl;
-let profileContentDivEl;
-let backToProfileContentDivEl;
+let pageContentDivEl;
 let logoutContentDivEl;
 
 function newInfo(targetEl, message) {
@@ -78,14 +77,20 @@ function onOtherResponse(targetEl, xhr) {
 }
 
 function hasAuthorization() {
-    return localStorage.getItem('user') !== null;
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'protected/logout');
+    xhr.send();
+    if (xhr.status === OK) {
+        return true;
+    }
 }
 
 function setAuthorization(user) {
     return localStorage.setItem('user', JSON.stringify(user));
 }
 
-function getAuthorization() {
+function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 }
 
@@ -95,20 +100,10 @@ function setUnauthorized() {
 
 function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
-    profileContentDivEl = document.getElementById('profile-content');
-    couponContentDivEl = document.getElementById('coupon-content');
-    backToProfileContentDivEl = document.getElementById('back-to-profile-content');
+    pageContentDivEl = document.getElementById('page-content');
     logoutContentDivEl = document.getElementById('logout-content');
 
-    const loginButtonEl = document.getElementById('login-button');
-    loginButtonEl.addEventListener('click', onLoginButtonClicked);
-
-    const logoutButtonEl = document.getElementById('logout-button');
-    logoutButtonEl.addEventListener('click', onLogoutButtonClicked);
-
-    if (hasAuthorization()) {
-        onProfileLoad(getAuthorization());
-    }
+    onPageLoad();
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);

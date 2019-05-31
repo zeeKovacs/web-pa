@@ -1,3 +1,42 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+button, dropdown {
+    font: italic 18pt normal;
+    padding: 12px;
+    border: none;
+    color: white;
+    background: rgba(0,0,0,0);
+}
+
+button:hover, select:hover {
+    color: yellow;
+}
+
+nav {
+    width: 100%;
+    position: absolute;
+    top: 65%;
+    text-align: center;
+    background-image: linear-gradient(to right, rgba(195, 206, 224, 0), rgba(195, 206, 224, .7), rgba(195, 206, 224, .0));
+}
+
+#topbar {
+    width: 100%;
+    height: 30%;
+    position: relative;
+    background-image: url("topbarbackground.jpg");
+}
+
+#page-content {
+    width: 100%;
+    height: 70%;
+}
+
 .error {
     color: red;
 }
@@ -8,4 +47,11 @@
 
 .hidden {
     display: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }

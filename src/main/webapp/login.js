@@ -2,7 +2,7 @@ function onLoginResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setAuthorization(user);
-        onProfileLoad(user);
+        onPageLoad(user);
     } else {
         onOtherResponse(loginContentDivEl, this);
     }

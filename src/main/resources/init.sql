@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
-DROP TABLE IF EXISTS order_item CASCADE;
-DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS cart_items CASCADE;
+DROP TABLE IF EXISTS carts CASCADE;
 
 CREATE TABLE users(
     id serial primary key,
@@ -20,31 +20,31 @@ CREATE TABLE products(
     price numeric check (price > 0)
 );
 
-CREATE TABLE orders(
+CREATE TABLE carts(
 	id serial primary key,
 	user_id int references users(id),
 	price numeric default 0
 );
 
-CREATE TABLE order_item(
+CREATE TABLE cart_items(
 	id serial primary key,
-    order_id int references orders(id),
+    cart_id int references carts(id),
     product_id int references products(id),
-    item_quantity numeric not null,
-    item_price numeric not null
+    quantity numeric not null,
+    price numeric not null
 );
 
-create or replace function total_order_price()
+create or replace function total_cart_price()
 returns trigger as '
 begin 
-update orders set price = (select sum(item_price) from order_item join orders on order_item.order_id = orders.id);
+update carts set price = (select sum(cart_items.price) from cart_items join carts on cart_items.cart_id = carts.id);
 return new;
 end;
 ' language plpgsql;
 
-create trigger total_order_price
-after insert or delete on order_item for each row
-execute procedure total_order_price();
+create trigger total_cart_price
+after insert or delete on cart_items for each row
+execute procedure total_cart_price();
 
 CREATE OR REPLACE FUNCTION add_user(name text, email text, role text, password varchar(8), phone_number varchar(15))
 RETURNS void AS '
@@ -60,17 +60,17 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_order(user_id int)
+CREATE OR REPLACE FUNCTION add_cart(user_id int)
 RETURNS void AS '
 BEGIN
-  INSERT INTO orders(user_id) VALUES (user_id);
+  INSERT INTO carts(user_id) VALUES (user_id);
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_order_item(order_id int, product_id int, item_quantity int)
+CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity int)
 RETURNS void AS '
 BEGIN
-  INSERT INTO order_item(order_id, product_id, item_quantity, item_price) VALUES (order_id, product_id, item_quantity, 2 * (select price from products where id = product_id));
+  INSERT INTO cart_items(cart_id, product_id, quantity, price) VALUES (cart_id, product_id, quantity, quantity * (select price from products where id = product_id));
 END;
 ' LANGUAGE plpgsql;
 
@@ -79,6 +79,6 @@ select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'admin', '88888888', '+36/
 
 select add_product('tomato', true, 'kg', 800);
 
-select add_order(1);
+select add_cart(1);
 
-select add_order_item(1, 1, 4);
+select add_cart_item(1, 1, 4);

@@ -1,11 +1,12 @@
 body, html {
     height: 100%;
+    width: 100%;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+    text-align: center;
+    overflow: auto;
 }
 
-button, dropdown {
+button {
     font: italic 18pt normal;
     padding: 12px;
     border: none;
@@ -13,19 +14,64 @@ button, dropdown {
     background: rgba(0,0,0,0);
 }
 
-button:hover, select:hover {
-    color: yellow;
+a {
+    color: #f7f775;
+    text-decoration: none;
 }
 
-nav {
+a:hover {
+    color:white;
+}
+
+#homepage-content {
+    height: 100%;
+    width: 100%;
+    background-image: url('mainpagebackground.jpg');
+}
+
+#homepage-content h1 {
+    margin: 0;
+    font-size: 48pt;
+    text-align: left;
+    color: white;
+}
+
+#homepage-nav {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    font: normal 18pt bold;
+}
+
+#homepage-nav button {
+    font: italic 24pt normal;
+    padding-left: 20px;
+    padding-right: 20px;
+    background: #f7f775;
+    border: 4px #f7f775;
+    border-radius: 6px;
+    margin: 8px;
+}
+
+#homepage-nav button:hover {
+    background: white;
+    border: 4px white;
+    color: #f7f775;
+}
+
+#main-page-content {
+    height: 100%;
+    width: 100%;
+}
+
+#main-page-nav {
     width: 100%;
     position: absolute;
     top: 65%;
-    text-align: center;
     background-image: linear-gradient(to right, rgba(195, 206, 224, 0), rgba(195, 206, 224, .7), rgba(195, 206, 224, .0));
 }
 
-#topbar {
+#topbar-content {
     width: 100%;
     height: 30%;
     position: relative;

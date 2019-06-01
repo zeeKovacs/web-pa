@@ -7,6 +7,9 @@ const INTERNAL_SERVER_ERROR = 500;
 let loginContentDivEl;
 let pageContentDivEl;
 let logoutContentDivEl;
+let homepageContentDivEl;
+let cartContentDivEl;
+let topbarContentDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -102,6 +105,9 @@ function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
     pageContentDivEl = document.getElementById('page-content');
     logoutContentDivEl = document.getElementById('logout-content');
+    homepageContentDivEl = document.getElementById('homepage-content');
+    cartContentDivEl = document.getElementById('cart-content');
+    topbarContentDivEl = document.getElementById('topbar-content');
 
     onPageLoad();
 }

@@ -1,8 +1,9 @@
 function onLoginResponse() {
     if (this.status === OK) {
-        const user = JSON.parse(this.responseText);
-        setAuthorization(user);
-        onPageLoad(user);
+        alert('We in boys, Pog.');
+        //const user = JSON.parse(this.responseText);
+        //setAuthorization(user);
+        //onPageLoad(user);
     } else {
         onOtherResponse(loginContentDivEl, this);
     }

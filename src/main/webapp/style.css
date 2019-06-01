@@ -1,21 +1,42 @@
 body, html {
-    height: 100%;
-    width: 100%;
     margin: 0;
-    text-align: center;
-    overflow: auto;
+    width: 100%;
+    color: white;
+    height: 100%;
+    text-align:center;
+    font: italic 24pt normal;
+}
+
+:root {
+    --blue: #2d3861;
+}
+
+h1 {
+    margin: 0;
+    padding: 20px;
+    font-size: 48pt;
+    text-align: left;
+}
+
+h1 a {
+    color: white;
 }
 
 button {
-    font: italic 18pt normal;
-    padding: 12px;
-    border: none;
+    margin: 8px;
     color: white;
+    border: none;
+    padding: 8px;
+    font: italic 24pt normal;
     background: rgba(0,0,0,0);
 }
 
+button:hover {
+    color: var(--blue);
+}
+
 a {
-    color: #f7f775;
+    color: var(--blue);
     text-decoration: none;
 }
 
@@ -23,59 +44,64 @@ a:hover {
     color:white;
 }
 
-#homepage-content {
-    height: 100%;
-    width: 100%;
-    background-image: url('mainpagebackground.jpg');
+input[type=submit], input[type = text],input[type = number], input[type = password] {
+    width: 50%;
+    color: white;
+    margin: 12px;
+    padding: 15px;
+    border-radius: 6px;
+    background: var(--blue);
+    border: 4px solid var(--blue);
 }
 
-#homepage-content h1 {
-    margin: 0;
-    font-size: 48pt;
-    text-align: left;
-    color: white;
+#login-content, #sign-up-content {
+    top: 40%;
+    width: 40%;
+    height: 100%;
+    position: absolute;
+}
+
+#homepage-content {
+    width: 100%;
+    height: 100%;
+    background-image: url('homepage-background.jpg');
 }
 
 #homepage-nav {
-    position: absolute;
     top: 40%;
     left: 10%;
-    font: normal 18pt bold;
+    font-size: 18pt;
+    position: absolute;
 }
 
 #homepage-nav button {
-    font: italic 24pt normal;
-    padding-left: 20px;
-    padding-right: 20px;
-    background: #f7f775;
-    border: 4px #f7f775;
     border-radius: 6px;
-    margin: 8px;
+    background: var(--blue);
+    border: 4px solid var(--blue);
 }
 
 #homepage-nav button:hover {
     background: white;
-    border: 4px white;
-    color: #f7f775;
+    border: 4px solid white;
 }
 
 #main-page-content {
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
 
 #main-page-nav {
+    top: 65%;
     width: 100%;
     position: absolute;
-    top: 65%;
     background-image: linear-gradient(to right, rgba(195, 206, 224, 0), rgba(195, 206, 224, .7), rgba(195, 206, 224, .0));
 }
 
-#topbar-content {
+#top-bar-content {
     width: 100%;
     height: 30%;
     position: relative;
-    background-image: url("topbarbackground.jpg");
+    background-image: url("top-bar-background.jpg");
 }
 
 #page-content {
@@ -101,3 +127,17 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 4px solid var(--blue);
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px var(--blue) inset;
+  transition: background-color 5000s ease-in-out 0s;

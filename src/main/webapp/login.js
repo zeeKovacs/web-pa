@@ -1,9 +1,7 @@
 function onLoginResponse() {
     if (this.status === OK) {
-        alert('We in boys, Pog.');
-        //const user = JSON.parse(this.responseText);
-        //setAuthorization(user);
-        //onPageLoad(user);
+        clearMessages();
+        showContents(['main-page-content', 'page-content', 'logout-button']);
     } else {
         onOtherResponse(loginContentDivEl, this);
     }

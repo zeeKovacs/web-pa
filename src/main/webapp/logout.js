@@ -1,10 +1,9 @@
 function onLogoutResponse() {
     if (this.status === OK) {
-        setUnauthorized();
         clearMessages();
-        showContents(['login-content'])
+        showContents(['home-page-content'])
     } else {
-        onOtherResponse(logoutContentDivEl, this);
+        onOtherResponse(logoutButtonDivEl, this);
     }
 }
 
@@ -12,6 +11,6 @@ function onLogoutButtonClicked(event) {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLogoutResponse);
     xhr.addEventListener('error', onNetworkError);
-    xhr.open('POST', 'protected/logout');
+    xhr.open('POST', '/logout');
     xhr.send();
 }

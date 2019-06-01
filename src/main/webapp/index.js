@@ -6,10 +6,10 @@ const INTERNAL_SERVER_ERROR = 500;
 
 let loginContentDivEl;
 let pageContentDivEl;
-let logoutContentDivEl;
+let logoutButtonDivEl;
 let homepageContentDivEl;
 let cartContentDivEl;
-let topbarContentDivEl;
+let topBarContentDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -104,10 +104,10 @@ function setUnauthorized() {
 function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
     pageContentDivEl = document.getElementById('page-content');
-    logoutContentDivEl = document.getElementById('logout-content');
+    logoutButtonDivEl = document.getElementById('logout-button');
     homepageContentDivEl = document.getElementById('homepage-content');
     cartContentDivEl = document.getElementById('cart-content');
-    topbarContentDivEl = document.getElementById('topbar-content');
+    topBarContentDivEl = document.getElementById('top-bar-content');
 
     onPageLoad();
 }

@@ -24,7 +24,7 @@
         </nav>
         <div id="login-content" class="hidden content">
             <form id="login-form" onsubmit="return false;">
-                <input type="text" name="email" placeholder="email address"><br>
+                <input type="email" name="email" placeholder="email address"><br>
                 <input type="password" name="password" placeholder="password"><br>
                 <button id="login-button" onclick="onLoginButtonClicked();">Login</button>
             </form>
@@ -32,7 +32,7 @@
         <div id="sign-up-content" class="hidden content">
             <form id="sign-up-form" onsubmit="return false;">
                 <input type="text" name="name" placeholder="name">
-                <input type="text" name="email" placeholder="email">
+                <input type="email" name="email" placeholder="email">
                 <input type="password" name="password" placeholder="password">
                 <input type="text" name="phone_number"placeholder="Phone: +36/XX-XXX-XXX"><br>
                 <button id="sign-up-button" onclick="onSignUpButtonClicked();">Sign Up</button>

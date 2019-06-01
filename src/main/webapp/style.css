@@ -44,11 +44,11 @@ a:hover {
     color:white;
 }
 
-input[type=submit], input[type = text],input[type = number], input[type = password] {
+input[type=submit], input[type = text],input[type = email], input[type = password] {
     width: 50%;
     color: white;
-    margin: 12px;
-    padding: 15px;
+    margin: 10px;
+    padding: 12px;
     border-radius: 6px;
     background: var(--blue);
     border: 4px solid var(--blue);
@@ -57,7 +57,7 @@ input[type=submit], input[type = text],input[type = number], input[type = passwo
 #login-content, #sign-up-content {
     top: 40%;
     width: 40%;
-    height: 100%;
+    height: 50%;
     position: absolute;
 }
 
@@ -141,3 +141,4 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: white;
   -webkit-box-shadow: 0 0 0px 1000px var(--blue) inset;
   transition: background-color 5000s ease-in-out 0s;
+}

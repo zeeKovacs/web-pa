@@ -3,10 +3,8 @@ package com.codecool.web.servlet;
 import com.codecool.web.dao.UserDao;
 import com.codecool.web.dao.database.DatabaseUserDao;
 import com.codecool.web.model.User;
-import com.codecool.web.service.LoginService;
 import com.codecool.web.service.SignUpService;
 import com.codecool.web.service.exception.ServiceException;
-import com.codecool.web.service.simple.SimpleLoginService;
 import com.codecool.web.service.simple.SimpleSignUpService;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,34 +14,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet("/login")
-public final class LoginServlet extends AbstractServlet {
+@WebServlet("/signUp")
+public final class SignUpServlet extends AbstractServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new DatabaseUserDao(connection);
-            SignUpService signUpService = new SimpleSignUpService(userDao);
-
-            User user = signUpService.addGuestUser();
-            req.getSession().setAttribute("user", user);
-
-            sendMessage(resp, HttpServletResponse.SC_OK, user);
-        } catch (ServiceException ex) {
-            sendMessage(resp, HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
-        } catch (SQLException ex) {
-            handleSqlError(resp, ex);
-        }
-    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             UserDao userDao = new DatabaseUserDao(connection);
-            LoginService loginService = new SimpleLoginService(userDao);
+            SignUpService signUpService = new SimpleSignUpService(userDao);
 
+            String name = req.getParameter("name");
             String email = req.getParameter("email");
             String password = req.getParameter("password");
+            String phone_number = req.getParameter("phone_number");
+            String role = "USER";
 
-            User user = loginService.loginUser(email, password);
+            User user = signUpService.addUser(name, email, role, password, phone_number);
             req.getSession().setAttribute("user", user);
 
             sendMessage(resp, HttpServletResponse.SC_OK, user);

@@ -46,17 +46,21 @@ create trigger total_cart_price
 after insert or delete on cart_items for each row
 execute procedure total_cart_price();
 
-CREATE OR REPLACE FUNCTION add_user(name text, email text, password varchar(8), phone_number varchar(15))
-RETURNS void AS '
+CREATE OR REPLACE FUNCTION add_user(name text, email text, role text, password varchar(8), phone_number varchar(15))
+RETURNS int AS '
+DECLARE id int;
 BEGIN
-  INSERT INTO users(name, email, role, password, phone_number) VALUES (name, email, ''USER'', password, phone_number);
+  INSERT INTO users(name, email, role, password, phone_number) VALUES (name, email, role, password, phone_number) RETURNING users.id into id;
+  RETURN id;
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_guest_user(id int)
-RETURNS void AS '
+CREATE OR REPLACE FUNCTION add_guest_user()
+RETURNS int AS '
+DECLARE latest_id int := (SELECT get_next_user_id());
 BEGIN
-  INSERT INTO users(id, name, email, role, password) VALUES (id, (select concat(''Guest'', id)), (select concat(''guest'', id, ''@dummymail.com'')), ''GUEST'', (select concat(''guest'', id)));
+  INSERT INTO users(name, email, role, password) VALUES ((select concat(''Guest'', latest_id)), (select concat(''guest'', latest_id, ''@dummymail.com'')), ''GUEST'', (select concat(''guest'', latest_id))) RETURNING ID into latest_id;
+  RETURN latest_id;
 END;
 ' LANGUAGE plpgsql;
 
@@ -81,10 +85,17 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION find_user_by_email(emailToCheck text)
+CREATE OR REPLACE FUNCTION find_user_by_email(emailToFind text)
 RETURNS SETOF users AS '
 BEGIN
-  RETURN QUERY SELECT * FROM users WHERE users.email=emailToCheck;
+  RETURN QUERY SELECT * FROM users WHERE email=emailToFind;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_user_by_id(idToFind int)
+RETURNS SETOF users AS '
+BEGIN
+  RETURN QUERY SELECT * FROM users WHERE id=idToFind;
 END;
 ' LANGUAGE plpgsql;
 
@@ -98,7 +109,7 @@ END;
 CREATE OR REPLACE FUNCTION get_next_user_id()
 returns int AS '
 BEGIN
-    SELECT max(id+1) from users;
+    RETURN (SELECT max(id+1) from users);
 END;
 ' LANGUAGE plpgsql;
 

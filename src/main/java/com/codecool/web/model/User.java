@@ -28,4 +28,8 @@ public final class User extends AbstractModel {
     public String getPassword() {
         return password;
     }
+
+    public String getRole() {
+        return String.valueOf(this.role);
+    }
 }

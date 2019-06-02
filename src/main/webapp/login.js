@@ -1,7 +1,8 @@
 function onLoginResponse() {
     if (this.status === OK) {
-        clearMessages();
-        showContents(['main-page-content', 'page-content', 'logout-button']);
+        const user = JSON.parse(this.responseText);
+        setUser(user);
+        onPageLoad(user);
     } else {
         onOtherResponse(loginContentDivEl, this);
     }

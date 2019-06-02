@@ -10,4 +10,8 @@ public interface UserDao {
     List<User> findAll() throws SQLException;
 
     User findByEmail(String email) throws SQLException;
+
+    User addGuestUser() throws SQLException;
+
+    User addUser(String name, String email, String role, String password, String phone_number) throws SQLException;
 }

@@ -25,4 +25,11 @@ function onSignUpButtonClicked() {
 }
 
 function onSignUpResponse() {
+    if (this.status === OK) {
+        const user = JSON.parse(this.responseText);
+        setUser(user);
+        onPageLoad(user);
+    } else {
+        onOtherResponse(homepageContentDivEl, this);
+    }
 }

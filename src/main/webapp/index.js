@@ -10,6 +10,7 @@ let logoutButtonDivEl;
 let homepageContentDivEl;
 let cartContentDivEl;
 let topBarContentDivEl;
+let signUpContentDivEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -89,7 +90,7 @@ function hasAuthorization() {
     }
 }
 
-function setAuthorization(user) {
+function setUser(user) {
     return localStorage.setItem('user', JSON.stringify(user));
 }
 
@@ -108,8 +109,9 @@ function onLoad() {
     homepageContentDivEl = document.getElementById('homepage-content');
     cartContentDivEl = document.getElementById('cart-content');
     topBarContentDivEl = document.getElementById('top-bar-content');
+    signUpContentDivEl = document.getElementById('sign-up-content');
 
-    onPageLoad();
+    onPageLoad(getCurrentUser());
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);

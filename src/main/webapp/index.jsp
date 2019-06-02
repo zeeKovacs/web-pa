@@ -11,6 +11,7 @@
     <script src="main-page.js"></script>
     <script src="logout.js"></script>
     <script src="homepage.js"></script>
+    <script src="sign-up.js"></script>
     <title>Grocery Store</title>
 </head>
 

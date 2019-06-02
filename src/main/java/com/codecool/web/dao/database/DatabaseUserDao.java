@@ -40,6 +40,58 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         return null;
     }
 
+    private User findById(int id) throws SQLException {
+        String sql = "SELECT * from find_user_by_id(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchUser(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public User addGuestUser() throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT add_guest_user()";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            int id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public User addUser(String name, String email, String role, String password, String phone_number) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT add_user(?,?,?,?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setString(2, email);
+            statement.setString(3, role);
+            statement.setString(4, password);
+            statement.setString(5, phone_number);
+            int id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
     private User fetchUser(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String name = resultSet.getString("name");

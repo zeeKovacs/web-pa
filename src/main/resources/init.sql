@@ -101,6 +101,13 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION find_items_by_cartid(idToFind int)
+RETURNS SETOF cart_items AS '
+BEGIN
+  RETURN QUERY SELECT * FROM cart_items WHERE cart_id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION find_user_by_id(idToFind int)
 RETURNS SETOF users AS '
 BEGIN

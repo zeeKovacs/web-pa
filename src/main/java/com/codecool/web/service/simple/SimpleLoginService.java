@@ -20,7 +20,7 @@ public final class SimpleLoginService implements LoginService {
         try {
             User user = userDao.findByEmail(email);
             if (user == null || !user.getPassword().equals(password)) {
-                throw new ServiceException("Bad login");
+                throw new ServiceException("Bad login.");
             }
             return user;
         } catch (IllegalArgumentException ex) {

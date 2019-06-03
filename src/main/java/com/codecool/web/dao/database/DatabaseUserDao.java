@@ -40,7 +40,8 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         return null;
     }
 
-    private User findById(int id) throws SQLException {
+    @Override
+    public User findById(int id) throws SQLException {
         String sql = "SELECT * from find_user_by_id(?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);

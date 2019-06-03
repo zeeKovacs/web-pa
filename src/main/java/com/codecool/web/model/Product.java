@@ -7,7 +7,7 @@ public class Product extends AbstractModel {
     private final String unit;
     private final int price;
 
-    Product(int id, String name, boolean availability, String unit, int price) {
+    public Product(int id, String name, boolean availability, String unit, int price) {
         super(id);
         this.name = name;
         this.availability = availability;

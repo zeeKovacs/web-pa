@@ -64,6 +64,15 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION update_user(idToUpdate int, newName text, newEmail text, newRole text, newPassword varchar(8), new_phone_number varchar(15))
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  UPDATE users SET name=newName, email=newEmail, role=''USER'', password=newPassword, phone_number=new_phone_number WHERE users.id=idToUpdate RETURNING id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION add_product(name text, availability boolean, unit text, price numeric)
 RETURNS void AS '
 BEGIN

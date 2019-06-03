@@ -15,7 +15,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
 
     @Override
     public List<User> findAll() throws SQLException {
-        String sql = "SELECT find_all_user()";
+        String sql = "SELECT * from find_all_user()";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             List<User> users = new ArrayList<>();
@@ -84,6 +84,29 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
             int id = fetchGeneratedId(statement);
             connection.commit();
             return findById(id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public User updateUser(int id, String name, String email, String role, String password, String phone_number) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT update_user(?,?,?,?,?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+            statement.setString(3, email);
+            statement.setString(4, role);
+            statement.setString(5, password);
+            statement.setString(6, phone_number);
+            int returned_id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(returned_id);
         } catch (SQLException ex) {
             connection.rollback();
             throw ex;

@@ -32,4 +32,13 @@ public class SimpleSignUpService implements SignUpService {
             throw new ServiceException(ex.getMessage());
         }
     }
+
+    @Override
+    public User updateUser(int id, String name, String email, String role, String password, String phone_number) throws SQLException, ServiceException {
+        try {
+            return userDao.updateUser(id, name, email, role, password, phone_number);
+        } catch (IllegalArgumentException ex) {
+            throw new ServiceException(ex.getMessage());
+        }
+    }
 }

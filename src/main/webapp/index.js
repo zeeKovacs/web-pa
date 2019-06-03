@@ -98,7 +98,7 @@ function getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));
 }
 
-function setUnauthorized() {
+function emptyStorage() {
     return localStorage.removeItem('user');
 }
 

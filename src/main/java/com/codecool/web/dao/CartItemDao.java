@@ -3,8 +3,9 @@ package com.codecool.web.dao;
 import com.codecool.web.model.CartItem;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public interface CartItemDao {
 
-    CartItem findCartItemByCartId(int id) throws SQLException;
+    List<CartItem> findCartItemsByCartId(int id) throws SQLException;
 }

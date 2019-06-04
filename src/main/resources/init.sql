@@ -80,6 +80,8 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+
+
 CREATE OR REPLACE FUNCTION add_cart(user_id int)
 RETURNS void AS '
 BEGIN
@@ -101,7 +103,14 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION find_items_by_cartid(idToFind int)
+CREATE OR REPLACE FUNCTION find_cart_by_user_id(idToFind int)
+RETURNS SETOF carts AS '
+BEGIN
+  RETURN QUERY SELECT * FROM carts WHERE user_id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_items_by_cart_id(idToFind int)
 RETURNS SETOF cart_items AS '
 BEGIN
   RETURN QUERY SELECT * FROM cart_items WHERE cart_id=idToFind;
@@ -112,6 +121,13 @@ CREATE OR REPLACE FUNCTION find_user_by_id(idToFind int)
 RETURNS SETOF users AS '
 BEGIN
   RETURN QUERY SELECT * FROM users WHERE id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_product_by_id(idToFind int)
+RETURNS SETOF products AS '
+BEGIN
+  RETURN QUERY SELECT * FROM products WHERE id=idToFind;
 END;
 ' LANGUAGE plpgsql;
 

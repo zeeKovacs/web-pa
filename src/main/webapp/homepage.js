@@ -22,7 +22,8 @@ function onContinueAsGuestResponse() {
         onPageLoad(user);
     } else {
         onOtherResponse(loginContentDivEl, this);
-    }}
+    }
+}
 
 function continueAsAGuestClicked() {
     const xhr = new XMLHttpRequest();

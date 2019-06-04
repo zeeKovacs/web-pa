@@ -3,14 +3,32 @@ package com.codecool.web.dao.database;
 import com.codecool.web.dao.CartItemDao;
 import com.codecool.web.model.CartItem;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DatabaseCartItemDao implements CartItemDao {
+public class DatabaseCartItemDao extends AbstractDao implements CartItemDao {
+
+    public DatabaseCartItemDao(Connection connection) {
+        super(connection);
+    }
 
     @Override
-    public CartItem findCartItemByCartId(int id) throws SQLException {
-        return null;
+    public List<CartItem> findCartItemsByCartId(int id) throws SQLException {
+        String sql = "SELECT * from find_item_by_cart_id(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                List<CartItem> items = new ArrayList<>();
+                while (resultSet.next()) {
+                    items.add(fetchCartItem(resultSet));
+                }
+                return items;
+            }
+        }
     }
 
     private CartItem fetchCartItem(ResultSet resultSet) throws SQLException {

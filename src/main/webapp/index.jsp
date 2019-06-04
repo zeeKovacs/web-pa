@@ -47,7 +47,7 @@
                 <button onclick="onMiscButtonClicked();">Misc</button>
                 <button onclick="onContactButtonClicked();">Contact</button>
                 <button onclick="onAboutUsButtonClicked();">About Us</button>
-                <button id="sign-up-button" onclick="signUpButtonClicked();" class="hidden-content">Sign Up</button>
+                <button id="sign-up-button" onclick="signUpButtonClicked();" class="hidden content">Sign Up</button>
                 <button id="login-button" onclick="loginButtonClicked();" class="hidden content">Login</button>
                 <button id="logout-button" onclick="onLogoutButtonClicked();" class="hidden content">Logout</button>
             </nav>

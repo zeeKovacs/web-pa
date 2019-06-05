@@ -29,7 +29,7 @@ public class DatabaseProductDao extends AbstractDao implements ProductDao {
 
     @Override
     public List<Product> findAll() throws SQLException {
-        String sql = "SELECT * from find_all_user()";
+        String sql = "SELECT * from find_all_products()";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             List<Product> products = new ArrayList<>();

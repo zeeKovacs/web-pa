@@ -1,4 +1,4 @@
-function onSignUpButtonClicked() {
+function signUpButtonClicked() {
     const signUpFormEl = document.forms['sign-up-form'];
 
     const nameInputEl = signUpFormEl.querySelector('input[name="name"]');
@@ -18,13 +18,13 @@ function onSignUpButtonClicked() {
     params.append('phone_number', phone_number);
 
     const xhr = new XMLHttpRequest();
-    xhr.addEventListener('load', onSignUpResponse);
+    xhr.addEventListener('load', signUpResponse);
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'signUp');
     xhr.send(params);
 }
 
-function onSignUpResponse() {
+function signUpResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setUser(user);

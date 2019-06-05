@@ -1,112 +1,80 @@
 body, html {
-    margin: 0;
     width: 100%;
     color: white;
-    height: 100%;
-    text-align:center;
-    font: italic 24pt normal;
+    height: auto;
+    margin: auto;
+    text-align: center;
+    background-color: rgb(200, 200, 200, 0.1);
+    font: normal 18pt 'Comfortaa', cursive;
 }
 
 :root {
-    --blue: #2d3861;
-}
-
-h1 {
-    margin: 0;
-    padding: 20px;
-    font-size: 48pt;
-    text-align: left;
-}
-
-h1 a {
-    color: white;
-}
-
-button {
-    margin: 8px;
-    color: white;
-    border: none;
-    padding: 8px;
-    font: italic 24pt normal;
-    background: rgba(0,0,0,0);
-}
-
-button:hover {
-    color: var(--blue);
+    --color: #000000;
 }
 
 a {
-    color: var(--blue);
     text-decoration: none;
 }
 
-a:hover {
-    color:white;
+p {
+    margin: 0;
+    padding: 10px;
+    font-size: 48px;
+    font-weight: bold;
 }
 
 input[type=submit], input[type = text],input[type = email], input[type = password] {
-    width: 50%;
-    color: white;
-    margin: 10px;
-    padding: 12px;
-    border-radius: 6px;
-    background: var(--blue);
-    border: 4px solid var(--blue);
+    font: inherit;
 }
 
-#login-content, #sign-up-content {
-    top: 40%;
-    width: 40%;
-    height: 50%;
-    position: absolute;
+button {
+    border: none;
+    font: inherit;
+    color: inherit;
+    transition-duration: 1s;
+    padding: 20px 15px 20px 15px;
+    background-color: transparent;
 }
 
-#homepage-content {
-    width: 100%;
-    height: 100%;
-    background-image: url('homepage-background.jpg');
-}
-
-#homepage-nav {
-    top: 40%;
-    left: 10%;
-    font-size: 18pt;
-    position: absolute;
-}
-
-#homepage-nav button {
-    border-radius: 6px;
-    background: var(--blue);
-    border: 4px solid var(--blue);
-}
-
-#homepage-nav button:hover {
-    background: white;
-    border: 4px solid white;
-}
-
-#main-page-content {
-    width: 100%;
-    height: 100%;
-}
-
-#main-page-nav {
-    top: 65%;
-    width: 100%;
-    position: absolute;
-    background-image: linear-gradient(to right, rgba(195, 206, 224, 0), rgba(195, 206, 224, .7), rgba(195, 206, 224, .0));
-}
-
-#top-bar-content {
-    width: 100%;
-    height: 30%;
-    position: relative;
-    background-image: url("top-bar-background.jpg");
+button:hover {
+    transition-duration: 1s;
+    padding: 20px 30px 20px 30px;
 }
 
 #page-content {
-    width: 100%;
-    height: 70%;
+    position: relative;
+}
+
+#top-nav {
+    background-image: url('background.jpg');
+}
+
+#products-content {
+    left: 15%;
+    width: 70%;
+    margin: 20px;
+    padding: 10px;
+    background: white;
+    position: absolute;
+    border-radius: 4px;
+}
+
+#products-content img {
+    padding: 18px;
+}
+
+#products-content img:hover {
+    transition-duration: 0.3s;
+    box-shadow: inset 0 0 3pt 2pt black;
+}
+
+#cart-content {
+    top: 5%;
+    height: 300px;
+    width: 300px;
+    float: right;
+    position: sticky;
+    background-color: black;
 }
 
 .error {
@@ -137,8 +105,8 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  border: 4px solid var(--blue);
+  border: 4px solid black;
   -webkit-text-fill-color: white;
-  -webkit-box-shadow: 0 0 0px 1000px var(--blue) inset;
+  -webkit-box-shadow: 0 0 0px 1000px black inset;
   transition: background-color 5000s ease-in-out 0s;
 }

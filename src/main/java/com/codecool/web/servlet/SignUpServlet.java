@@ -29,13 +29,7 @@ public final class SignUpServlet extends AbstractServlet {
             String phone_number = req.getParameter("phone_number");
             String role = "USER";
 
-            User user = (User) req.getSession().getAttribute("user");
-            if (user == null) {
-                user = signUpService.addUser(name, email, role, password, phone_number);
-            } else if (user.getRole().equals("GUEST")) {
-                int id = user.getId();
-                user = signUpService.updateUser(id, name, email, role, password, phone_number);
-            }
+            User user = signUpService.addUser(name, email, role, password, phone_number);
             req.getSession().setAttribute("user", user);
 
             sendMessage(resp, HttpServletResponse.SC_OK, user);

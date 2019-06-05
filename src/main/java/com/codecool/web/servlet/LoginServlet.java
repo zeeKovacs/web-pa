@@ -34,6 +34,7 @@ public final class LoginServlet extends AbstractServlet {
             handleSqlError(resp, ex);
         }
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {

@@ -14,4 +14,8 @@ public class Product extends AbstractModel {
         this.unit = unit;
         this.price = price;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }

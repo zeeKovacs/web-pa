@@ -2,8 +2,7 @@ function onLogoutResponse() {
     if (this.status === OK) {
         clearMessages();
         emptyStorage();
-        const user = null;
-        onPageLoad(user);
+        onPageLoad(getUser());
     } else {
         onOtherResponse(logoutButtonDivEl, this);
     }

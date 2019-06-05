@@ -5,11 +5,6 @@ const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 
 let loginContentDivEl;
-let pageContentDivEl;
-let logoutButtonDivEl;
-let homepageContentDivEl;
-let cartContentDivEl;
-let topBarContentDivEl;
 let signUpContentDivEl;
 
 function newInfo(targetEl, message) {
@@ -80,38 +75,31 @@ function onOtherResponse(targetEl, xhr) {
     }
 }
 
-function hasAuthorization() {
-    const xhr = new XMLHttpRequest();
-    xhr.addEventListener('error', onNetworkError);
-    xhr.open('GET', 'protected/logout');
-    xhr.send();
-    if (xhr.status === OK) {
-        return true;
-    }
-}
-
 function setUser(user) {
     return localStorage.setItem('user', JSON.stringify(user));
 }
 
-function getCurrentUser() {
+function setCart(cart) {
+    return localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function getUser() {
     return JSON.parse(localStorage.getItem('user'));
 }
 
+function getCart() {
+    return JSON.parse(localStorage.getItem('cart'));
+}
+
 function emptyStorage() {
-    return localStorage.removeItem('user');
+    return localStorage.removeItem('user', 'cart');
 }
 
 function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
-    pageContentDivEl = document.getElementById('page-content');
-    logoutButtonDivEl = document.getElementById('logout-button');
-    homepageContentDivEl = document.getElementById('homepage-content');
-    cartContentDivEl = document.getElementById('cart-content');
-    topBarContentDivEl = document.getElementById('top-bar-content');
     signUpContentDivEl = document.getElementById('sign-up-content');
 
-    onPageLoad(getCurrentUser());
+    onPageLoad();
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);

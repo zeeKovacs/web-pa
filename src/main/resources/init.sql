@@ -23,11 +23,11 @@ CREATE TABLE products(
 CREATE TABLE carts(
 	id serial primary key,
 	user_id int references users(id),
-	price numeric default 0
+	price numeric default 0,
+	checked_out boolean default false
 );
 
 CREATE TABLE cart_items(
-	id serial primary key,
     cart_id int references carts(id),
     product_id int references products(id),
     quantity numeric not null,
@@ -80,8 +80,6 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-
-
 CREATE OR REPLACE FUNCTION add_cart(user_id int)
 RETURNS void AS '
 BEGIN
@@ -90,9 +88,16 @@ END;
 ' LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION find_all_user()
-RETURNS void AS '
+RETURNS SETOF users AS '
 BEGIN
-  SELECT * FROM users;
+  RETURN QUERY SELECT * FROM users;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_all_products()
+RETURNS SETOF products AS '
+BEGIN
+  RETURN QUERY SELECT * FROM products;
 END;
 ' LANGUAGE plpgsql;
 
@@ -130,6 +135,8 @@ BEGIN
   RETURN QUERY SELECT * FROM products WHERE id=idToFind;
 END;
 ' LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity int)
 RETURNS void AS '

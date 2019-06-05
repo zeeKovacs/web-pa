@@ -27,28 +27,7 @@
                 <button id="login-button" onclick="onLoginButtonClicked();" class="hidden content">Login</button>
                 <button id="logout-button" onclick="onLogoutButtonClicked();" class="hidden content">Logout</button>
             </nav>
-            <div id="products-content">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-                <a href="https://picsum.photos/200/200"><img border="0" src="https://picsum.photos/200/200" width="200" height="200">
-            </div>
+            <div id="products-content"></div>
             <div id="login-content" class="hidden content">
                 <form id="login-form" onsubmit="return false;">
                     <input type="email" name="email" placeholder="email address"><br>

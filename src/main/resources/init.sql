@@ -8,8 +8,7 @@ CREATE TABLE users(
     name text unique not null,
     email text unique not null,
     role text not null,
-    password varchar(8) not null,
-    phone_number varchar(15) default 0
+    password varchar(8) not null
 );
 
 CREATE TABLE products(
@@ -17,12 +16,13 @@ CREATE TABLE products(
     name text unique not null,
     availability boolean,
     unit text check (unit in('each', 'kg')),
+    picture text not null,
     price numeric check (price > 0)
 );
 
 CREATE TABLE carts(
 	id serial primary key,
-	user_id int references users(id),
+	user_id int references users(id) default null,
 	price numeric default 0,
 	checked_out boolean default false
 );
@@ -46,21 +46,12 @@ create trigger total_cart_price
 after insert or delete on cart_items for each row
 execute procedure total_cart_price();
 
-CREATE OR REPLACE FUNCTION add_user(name text, email text, role text, password varchar(8), phone_number varchar(15))
+CREATE OR REPLACE FUNCTION add_user(name text, email text, role text, password varchar(8))
 RETURNS int AS '
 DECLARE id int;
 BEGIN
-  INSERT INTO users(name, email, role, password, phone_number) VALUES (name, email, role, password, phone_number) RETURNING users.id into id;
+  INSERT INTO users(name, email, role, password) VALUES (name, email, role, password) RETURNING users.id into id;
   RETURN id;
-END;
-' LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION add_guest_user()
-RETURNS int AS '
-DECLARE latest_id int := (SELECT get_next_user_id());
-BEGIN
-  INSERT INTO users(name, email, role, password) VALUES ((select concat(''Guest'', latest_id)), (select concat(''guest'', latest_id, ''@dummymail.com'')), ''GUEST'', (select concat(''guest'', latest_id))) RETURNING ID into latest_id;
-  RETURN latest_id;
 END;
 ' LANGUAGE plpgsql;
 
@@ -73,10 +64,10 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_product(name text, availability boolean, unit text, price numeric)
+CREATE OR REPLACE FUNCTION add_product(name text, availability boolean, unit text, picture text, price numeric)
 RETURNS void AS '
 BEGIN
-  INSERT INTO products(name, availability, unit, price) VALUES (name, availability, unit, price);
+  INSERT INTO products(name, availability, unit, picture, price) VALUES (name, availability, unit, picture, price);
 END;
 ' LANGUAGE plpgsql;
 
@@ -136,8 +127,6 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-
-
 CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity int)
 RETURNS void AS '
 BEGIN
@@ -145,17 +134,10 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION get_next_user_id()
-returns int AS '
-BEGIN
-    RETURN (SELECT max(id+1) from users);
-END;
-' LANGUAGE plpgsql;
+select add_user('Csontos Julia', 'csontos.julia@freemail.hu', 'ADMIN', '88888888');
+select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'ADMIN', '88888888');
 
-select add_user('Csontos Julia', 'csontos.julia@freemail.hu', 'ADMIN', '88888888', '+36/70-506-7039');
-select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'ADMIN', '88888888', '+36/70-328-6384');
-
-select add_product('tomato', true, 'kg', 800);
+select add_product('tomato', true, 'kg', 'tomato.jpg', 800);
 
 select add_cart(1);
 

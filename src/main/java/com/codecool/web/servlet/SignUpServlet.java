@@ -26,10 +26,9 @@ public final class SignUpServlet extends AbstractServlet {
             String name = req.getParameter("name");
             String email = req.getParameter("email");
             String password = req.getParameter("password");
-            String phone_number = req.getParameter("phone_number");
             String role = "USER";
 
-            User user = signUpService.addUser(name, email, role, password, phone_number);
+            User user = signUpService.addUser(name, email, role, password);
             req.getSession().setAttribute("user", user);
 
             sendMessage(resp, HttpServletResponse.SC_OK, user);

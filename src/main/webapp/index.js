@@ -95,6 +95,24 @@ function emptyStorage() {
     return localStorage.removeItem('user', 'cart');
 }
 
+function isUserAdmin() {
+    const user = getUser();
+    if (user === null) {
+        return false;
+    } if (user.role === 'ADMIN') {
+        return true;
+    } return false;
+}
+
+function isUserUser() {
+    const user = getUser();
+    if (user === null) {
+        return false;
+    } if (user.role === 'USER') {
+        return true;
+    } return false;
+}
+
 function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
     signUpContentDivEl = document.getElementById('sign-up-content');

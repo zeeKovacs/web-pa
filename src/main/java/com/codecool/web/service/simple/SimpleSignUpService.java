@@ -25,18 +25,18 @@ public class SimpleSignUpService implements SignUpService {
     }
 
     @Override
-    public User addUser(String name, String email, String role, String password, String phone_number) throws SQLException, ServiceException {
+    public User addUser(String name, String email, String role, String password) throws SQLException, ServiceException {
         try {
-            return userDao.addUser(name, email, role, password, phone_number);
+            return userDao.addUser(name, email, role, password);
         } catch (IllegalArgumentException ex) {
             throw new ServiceException(ex.getMessage());
         }
     }
 
     @Override
-    public User updateUser(int id, String name, String email, String role, String password, String phone_number) throws SQLException, ServiceException {
+    public User updateUser(int id, String name, String email, String role, String password) throws SQLException, ServiceException {
         try {
-            return userDao.updateUser(id, name, email, role, password, phone_number);
+            return userDao.updateUser(id, name, email, role, password);
         } catch (IllegalArgumentException ex) {
             throw new ServiceException(ex.getMessage());
         }

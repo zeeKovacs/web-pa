@@ -1,15 +1,14 @@
 function onPageLoad() {
     clearMessages();
-    const user = getUser();
-    if (user === null) {
-        alert('No user.');
-        showContents(['page-content', 'login-button', 'sign-up-button', 'cart-button']);
-    } else if (user.role === 'USER') {
-        alert('User user.');
-        showContents(['page-content','logout-button', 'orders-button']);
-    } else if (user.role === 'ADMIN') {
+    if (isUserAdmin()) {
         alert('Admin user.');
-        showContents(['page-content','logout-button', 'orders-button']);
+        showContents(['logout-button', 'orders-button']);
+    } if (isUserUser()) {
+        alert('User user.');
+        showContents(['logout-button', 'orders-button']);
+    } else {
+        alert('No user.');
+        showContents(['login-button', 'sign-up-button', 'cart-button']);
     }
 }
 
@@ -22,6 +21,8 @@ function onSignUpButtonClicked() {
 }
 
 function onProductsButtonClicked() {
+    showContents(['products-content']);
+
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onProductsReceived);
     xhr.addEventListener('error', onNetworkError);
@@ -32,24 +33,75 @@ function onProductsButtonClicked() {
 function onProductsReceived() {
     const text = this.responseText;
     const products = JSON.parse(text);
-    document.getElementById('products-content').appendChild(createProductsDropdown(products));
+    fillProductsContent(products);
 }
 
-function createProductsDropdown(products) {
-    const ulEl = document.createElement('ul');
+function fillProductsContent(products) {
+    const productsContentEl = document.getElementById('products-content');
+    removeAllChildren(productsContentEl);
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
 
-        const productButtonEl = document.createElement('button');
-        productButtonEl.setAttribute('data-product-id', product.id);
-        productButtonEl.textContent = product.name;
-        productButtonEl.addEventListener('click', onProductClicked);
+        const aEl = document.createElement('a');
+        aEl.href='javascript:void(0);';
+        aEl.setAttribute('data-product-id', product.id);
+        aEl.addEventListener('click', onProductClicked);
 
-        ulEl.appendChild(productButtonEl);
+        const picEl = document.createElement('img');
+        picEl.setAttribute('src', product.picture);
+        picEl.product = product;
+        aEl.appendChild(picEl);
+
+        productsContentEl.appendChild(aEl);
     }
-    return ulEl;
 }
 
-function onProductClicked() {
+function onProductClicked(evt) {
+    showContents(['login-button', 'sign-up-button', 'cart-button', 'product-page']);
+    const productContentEl = document.getElementById('product-page');
+
+    const product = evt.target.product;
+
+    const picEl = document.createElement('img');
+    picEl.setAttribute('src', product.picture);
+
+    const inputEl = document.createElement('input');
+    inputEl.type = 'number';
+    if (product.unit === 'kg') {
+        inputEl.setAttribute('step', '0.1');
+        inputEl.setAttribute('placeholder', 'Kilogrammes');
+    } else {
+        inputEl.setAttribute('step', '1');
+        inputEl.setAttribute('placeholder', 'Each');
+    }
+    inputEl.setAttribute('min', '0');
+    inputEl.id = 'quantity';
+    inputEl.addEventListener('input', calcProductPrice);
+    inputEl.product = product;
+
+    const pEl = document.createElement('p');
+    pEl.id = 'dynamic-price';
+    pEl.textContent = 'Price: 0 Ft';
+
+    const buttonEl = document.createElement('button');
+    buttonEl.textContent = 'Add to cart';
+    buttonEl.setAttribute('product-id', product.id);
+    buttonEl.addEventListener('click', onAddToCartClicked);
+
+    productContentEl.appendChild(picEl);
+    productContentEl.appendChild(inputEl);
+    productContentEl.appendChild(pEl);
+    productContentEl.appendChild(buttonEl);
+}
+
+function calcProductPrice(evt) {
+    const quantity = document.getElementById('quantity').value;
+    const product = evt.target.product;
+
+    const pEl = document.getElementById('dynamic-price');
+    pEl.textContent = 'Price: ' + (quantity * product.price).toFixed(2) + ' Ft';
+}
+
+function onAddToCartClicked() {
 }

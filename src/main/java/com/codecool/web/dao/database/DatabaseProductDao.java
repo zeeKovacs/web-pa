@@ -45,7 +45,8 @@ public class DatabaseProductDao extends AbstractDao implements ProductDao {
         String name = resultSet.getString("name");
         boolean availability = resultSet.getBoolean("availability");
         String unit = resultSet.getString("unit");
+        String picture = resultSet.getString("picture");
         int price = resultSet.getInt("price");
-        return new Product(id, name, availability, unit, price);
+        return new Product(id, name, availability, unit, picture, price);
     }
 }

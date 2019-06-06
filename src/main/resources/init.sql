@@ -137,7 +137,12 @@ END;
 select add_user('Csontos Julia', 'csontos.julia@freemail.hu', 'ADMIN', '88888888');
 select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'ADMIN', '88888888');
 
-select add_product('tomato', true, 'kg', 'tomato.jpg', 800);
+select add_product('tomato', true, 'kg', 'images/tomato.jpg', 800);
+select add_product('potato', true, 'kg', 'images/potato.png', 130);
+select add_product('apple', true, 'kg', 'images/apple.jpeg', 350);
+select add_product('strawberry', true, 'kg', 'images/strawberry.jpg', 1000);
+select add_product('jalapeno', true, 'each', 'images/jalapeno.jpg', 120);
+select add_product('banana', true, 'kg', 'images/banana.jpeg', 470);
 
 select add_cart(1);
 

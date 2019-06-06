@@ -4,10 +4,8 @@ import com.codecool.web.dao.UserDao;
 import com.codecool.web.dao.database.DatabaseUserDao;
 import com.codecool.web.model.User;
 import com.codecool.web.service.LoginService;
-import com.codecool.web.service.SignUpService;
 import com.codecool.web.service.exception.ServiceException;
 import com.codecool.web.service.simple.SimpleLoginService;
-import com.codecool.web.service.simple.SimpleSignUpService;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,22 +16,6 @@ import java.sql.SQLException;
 
 @WebServlet("/login")
 public final class LoginServlet extends AbstractServlet {
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try (Connection connection = getConnection(req.getServletContext())) {
-            UserDao userDao = new DatabaseUserDao(connection);
-            SignUpService signUpService = new SimpleSignUpService(userDao);
-
-            User user = signUpService.addGuestUser();
-            req.getSession().setAttribute("user", user);
-
-            sendMessage(resp, HttpServletResponse.SC_OK, user);
-        } catch (ServiceException ex) {
-            sendMessage(resp, HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
-        } catch (SQLException ex) {
-            handleSqlError(resp, ex);
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

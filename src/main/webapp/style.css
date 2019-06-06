@@ -4,7 +4,7 @@ body, html {
     height: auto;
     margin: auto;
     text-align: center;
-    background-color: rgb(200, 200, 200, 0.1);
+    background-color: rgb(200, 200, 200, 0.2);
     font: normal 18pt 'Comfortaa', cursive;
 }
 
@@ -18,13 +18,16 @@ a {
 
 p {
     margin: 0;
-    padding: 10px;
+    padding: 14px;
     font-size: 48px;
     font-weight: bold;
 }
 
-input[type=submit], input[type = text],input[type = email], input[type = password] {
+input[type=submit], input[type = text], input[type = email], input[type = password], input[type = number] {
+    margin: 10px;
     font: inherit;
+    padding: 12px;
+    text-align: center;
 }
 
 button {
@@ -46,7 +49,7 @@ button:hover {
 }
 
 #top-nav {
-    background-image: url('background.jpg');
+    background-image: url('images/background.jpg');
 }
 
 #products-content {
@@ -61,6 +64,25 @@ button:hover {
 
 #products-content img {
     padding: 18px;
+}
+
+#product-page {
+    left: 25%;
+    width: 50%;
+    margin: 20px;
+    padding: 10px;
+    background: white;
+    position: absolute;
+    border-radius: 4px;
+}
+
+#product-page img {
+    float: left;
+    padding: 18px;
+}
+
+#product-page {
+    color: black;
 }
 
 #products-content img:hover {

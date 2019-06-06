@@ -72,7 +72,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public User addUser(String name, String email, String role, String password, String phone_number) throws SQLException {
+    public User addUser(String name, String email, String role, String password) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "SELECT add_user(?,?,?,?,?)";
@@ -81,7 +81,6 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
             statement.setString(2, email);
             statement.setString(3, role);
             statement.setString(4, password);
-            statement.setString(5, phone_number);
             int id = fetchGeneratedId(statement);
             connection.commit();
             return findById(id);
@@ -94,7 +93,7 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
     }
 
     @Override
-    public User updateUser(int id, String name, String email, String role, String password, String phone_number) throws SQLException {
+    public User updateUser(int id, String name, String email, String role, String password) throws SQLException {
         boolean autoCommit = connection.getAutoCommit();
         connection.setAutoCommit(false);
         String sql = "SELECT update_user(?,?,?,?,?,?)";
@@ -104,7 +103,6 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
             statement.setString(3, email);
             statement.setString(4, role);
             statement.setString(5, password);
-            statement.setString(6, phone_number);
             int returned_id = fetchGeneratedId(statement);
             connection.commit();
             return findById(returned_id);
@@ -122,7 +120,6 @@ public final class DatabaseUserDao extends AbstractDao implements UserDao {
         String email = resultSet.getString("email");
         User.Role role = User.Role.valueOf(resultSet.getString("role"));
         String password = resultSet.getString("password");
-        String phone_number = resultSet.getString("phone_number");
-        return new User(id, name, role, email, password, phone_number);
+        return new User(id, name, role, email, password);
     }
 }

@@ -27,7 +27,8 @@
                 <button id="login-button" onclick="onLoginButtonClicked();" class="hidden content">Login</button>
                 <button id="logout-button" onclick="onLogoutButtonClicked();" class="hidden content">Logout</button>
             </nav>
-            <div id="products-content"></div>
+            <div id="products-content" class="hidden content"></div>
+            <div id="product-page" class="hidden content"></div>
             <div id="login-content" class="hidden content">
                 <form id="login-form" onsubmit="return false;">
                     <input type="email" name="email" placeholder="email address"><br>
@@ -40,7 +41,6 @@
                     <input type="text" name="name" placeholder="name">
                     <input type="email" name="email" placeholder="email">
                     <input type="password" name="password" placeholder="password">
-                    <input type="text" name="phone_number"placeholder="Phone: +36/XX-XXX-XXX"><br>
                     <button id="sign-up-button" onclick="signUpButtonClicked();">Sign Up</button>
                 </form>
             </div>

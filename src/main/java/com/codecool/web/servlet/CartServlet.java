@@ -45,7 +45,7 @@ public class CartServlet extends AbstractServlet {
             CartService cartService = new SimpleCartService(userDao);
 
             int user_id = 0;
-            if (req.getParameter("cart-id") != null) {
+            if (req.getParameter("user-id") != null) {
                 user_id = Integer.valueOf(req.getParameter("user-id"));
             }
             Cart cart = null;

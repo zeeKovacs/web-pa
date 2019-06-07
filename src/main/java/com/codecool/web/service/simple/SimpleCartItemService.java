@@ -5,6 +5,7 @@ import com.codecool.web.model.CartItem;
 import com.codecool.web.service.CartItemService;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class SimpleCartItemService implements CartItemService {
 
@@ -17,5 +18,10 @@ public class SimpleCartItemService implements CartItemService {
     @Override
     public CartItem addToCart(int cart_id, int product_id, int quantity) throws SQLException {
         return cartItemDao.addToCart(cart_id, product_id, quantity);
+    }
+
+    @Override
+    public List<CartItem> findCartItemsByCartId(int cart_id) throws SQLException {
+        return cartItemDao.findCartItemsByCartId(cart_id);
     }
 }

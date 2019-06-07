@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/cartItem")
 public class CartItemServlet extends AbstractServlet {
@@ -22,6 +23,10 @@ public class CartItemServlet extends AbstractServlet {
             CartItemDao cartItemDao = new DatabaseCartItemDao(connection);
             CartItemService cartItemService = new SimpleCartItemService(cartItemDao);
 
+            int cart_id = Integer.valueOf(req.getParameter("cart-id"));
+            List<CartItem> items = cartItemService.findCartItemsByCartId(cart_id);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, items);
         } catch (SQLException ex) {
             handleSqlError(resp, ex);
         }

@@ -128,9 +128,9 @@ END;
 ' LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION find_items_by_cart_id(idToFind int)
-RETURNS SETOF cart_items AS '
+RETURNS TABLE (id int, quantity numeric, unit text, price numeric, name text, picture text) AS '
 BEGIN
-  RETURN QUERY SELECT * FROM cart_items WHERE cart_id=idToFind;
+  RETURN QUERY select cart_items.id, cart_items.quantity, products.unit,  cart_items.price, products.name, products.picture from cart_items left join products on cart_items.product_id=products.id where cart_items.cart_id = idToFind;
 END;
 ' LANGUAGE plpgsql;
 
@@ -142,9 +142,9 @@ END;
 ' LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION find_cart_item_by_id(idToFind int)
-RETURNS SETOF cart_items AS '
+RETURNS TABLE (id int, quantity numeric, unit text, price numeric, name text, picture text) AS '
 BEGIN
-  RETURN QUERY SELECT * FROM cart_items WHERE id=idToFind;
+  RETURN QUERY select cart_items.id, cart_items.quantity, products.unit,  cart_items.price, products.name, products.picture from cart_items left join products on cart_items.id=products.id where cart_items.cart_id = idToFind;
 END;
 ' LANGUAGE plpgsql;
 
@@ -173,6 +173,7 @@ END;
 
 select add_user('Csontos Julia', 'csontos.julia@freemail.hu', 'ADMIN', '88888888');
 select add_user('Kovacs Zoltan', 'zolee95@gmail.com', 'ADMIN', '88888888');
+select add_user('Marika', 'marika@gmail.com', 'USER', '88888888');
 
 select add_product('tomato', true, 'kg', 'images/tomato.jpg', 800);
 select add_product('potato', true, 'kg', 'images/potato.png', 130);
@@ -181,7 +182,7 @@ select add_product('strawberry', true, 'kg', 'images/strawberry.jpg', 1000);
 select add_product('jalapeno', true, 'each', 'images/jalapeno.jpg', 120);
 select add_product('banana', true, 'kg', 'images/banana.jpeg', 470);
 
-select add_cart(1);
+select add_cart(3);
 
 select add_cart_item(1, 1, 4);
 select add_cart_item(1, 2, 3);

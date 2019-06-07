@@ -18,7 +18,7 @@ public class DatabaseCartItemDao extends AbstractDao implements CartItemDao {
 
     @Override
     public List<CartItem> findCartItemsByCartId(int id) throws SQLException {
-        String sql = "SELECT * from find_item_by_cart_id(?)";
+        String sql = "SELECT * from find_items_by_cart_id(?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -67,10 +67,11 @@ public class DatabaseCartItemDao extends AbstractDao implements CartItemDao {
 
     private CartItem fetchCartItem(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
-        int cart_id = resultSet.getInt("cart_id");
-        int product_id = resultSet.getInt("product_id");
         int quantity = resultSet.getInt("quantity");
+        String unit = resultSet.getString("unit");
+        String name = resultSet.getString("name");
+        String picture = resultSet.getString("picture");
         int price = resultSet.getInt("price");
-        return new CartItem(id, cart_id, product_id, quantity, price);
+        return new CartItem(id, name, unit, picture, quantity, price);
     }
 }

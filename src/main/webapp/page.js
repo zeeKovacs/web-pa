@@ -19,29 +19,31 @@ function onPageLoad() {
     showSpecificContent();
 }
 
-function showSpecificContent() {
+function showSpecificContent(additional) {
     const user = getUser()
 
     if (userExists() && user.role === 'ADMIN') {
         alert('Admin.');
+        showContents(['orders-button', 'logout-button', additional]);
     } else if (userExists() && user.role === 'USER') {
         alert('User.');
+        showContents(['cart-button', 'orders-button', 'logout-button', additional]);
     } else {
         alert('Guest.');
-        showContents(['login-button', 'sign-up-button']);
+        showContents(['cart-button', 'login-button', 'sign-up-button', additional]);
     }
 }
 
 function onLoginButtonClicked() {
-    showContents(['login-content']);
+    showSpecificContent('login-content');
 }
 
 function onSignUpButtonClicked() {
-    showContents(['sign-up-content']);
+    showSpecificContent('sign-up-content');
 }
 
 function onProductsButtonClicked() {
-    showContents(['login-button', 'sign-up-button', 'cart-button', 'products-content']);
+    showSpecificContent('products-content');
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onProductsReceived);
@@ -78,11 +80,12 @@ function fillProductsContent(products) {
 }
 
 function onProductClicked(evt) {
-    showContents(['login-button', 'sign-up-button', 'cart-button', 'product-page']);
+    showSpecificContent('product-page');
     const productContentEl = document.getElementById('product-page');
     removeAllChildren(productContentEl);
 
     const product = evt.target.product;
+    console.log(product.name)
 
     const picEl = document.createElement('img');
     picEl.setAttribute('src', product.picture);
@@ -136,7 +139,7 @@ function onAddToCartClicked() {
 
         const quantityInputEl = document.getElementById('quantity')
         const quantity = quantityInputEl.value;
-        const product_id = this.getAttribute("product-id");
+        const product_id = this.getAttribute('product-id');
         const cart_id = cart.id;
 
         const params = new URLSearchParams();
@@ -179,6 +182,63 @@ function createCartResponse() {
         const cart = JSON.parse(this.responseText);
         setCart(cart);
     } else {
-        onOtherResponse(document.getElementById('add-to-cart-button'), this);
+        onOtherResponse(document.getElementById('cart-content'), this);
     }
+}
+
+function onCartButtonClicked() {
+    showSpecificContent('cart-content');
+    removeAllChildren(document.getElementById('cart-content'));
+
+    if (!cartExists() && !userExists()) {
+        const cartContentEl = document.getElementById('cart-content');
+
+        const pEl = document.createElement('p');
+        pEl.textContent = 'Your cart is empty.';
+
+        cartContentEl.appendChild(pEl);
+        return;
+
+    } else {
+        const cart = getCart();
+
+        const params = new URLSearchParams();
+        params.append('cart-id', cart.id);
+
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', cartContentResponse);
+        xhr.addEventListener('error', onNetworkError);
+        xhr.open('GET', 'cartItem?' + params.toString());
+        xhr.send();
+    }
+}
+
+function cartContentResponse() {
+    const text = this.responseText;
+    const cartItems = JSON.parse(text);
+    fillCartContent(cartItems);
+}
+
+function fillCartContent(cartItems) {
+    const cartContentEl = document.getElementById('cart-content');
+    const ulEl = document.createElement('ul');
+    let total = 0;
+
+        for (let i = 0; i < cartItems.length; i++) {
+            const item = cartItems[i];
+
+            total += item.price;
+
+            const picEl = document.createElement('img');
+            picEl.setAttribute('src', item.picture);
+
+            const pEl = document.createElement('p');
+            pEl.textContent = item.name + ' ' + item.quantity + '' + item.unit + ' ' + item.price + ' ft';
+
+            const liEl = document.createElement('li');
+            liEl.appendChild(picEl);
+            liEl.appendChild(pEl);
+            ulEl.appendChild(liEl);
+        }
+        cartContentEl.appendChild(ulEl);
 }

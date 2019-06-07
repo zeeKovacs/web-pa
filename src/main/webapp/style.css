@@ -57,8 +57,9 @@ button:hover {
 }
 
 .wrapper {
-    left: 25%;
-    width: 50%;
+    left: 20%;
+    width: 60%;
+    color: black;
     margin: 20px;
     padding: 10px;
     background: white;
@@ -71,13 +72,17 @@ button:hover {
     left: 12.5%;
 }
 
-#product-page img {
+.wrapper img {
     float: left;
     padding: 18px;
 }
 
-#product-page {
-    color: black;
+.wrapper p {
+    font-size: 26pt;
+}
+
+.wrapper ul {
+    display: inline-block;
 }
 
 #products-content img:hover {

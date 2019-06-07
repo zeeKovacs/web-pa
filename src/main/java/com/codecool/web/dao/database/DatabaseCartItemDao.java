@@ -31,6 +31,40 @@ public class DatabaseCartItemDao extends AbstractDao implements CartItemDao {
         }
     }
 
+    @Override
+    public CartItem addToCart(int cart_id, int product_id, int quantity) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT add_cart_item(?,?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, cart_id);
+            statement.setInt(2, product_id);
+            statement.setInt(3, quantity);
+            int id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public CartItem findById(int id) throws SQLException {
+        String sql = "SELECT * from find_cart_item_by_id(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchCartItem(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
     private CartItem fetchCartItem(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int cart_id = resultSet.getInt("cart_id");

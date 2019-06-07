@@ -28,6 +28,7 @@ CREATE TABLE carts(
 );
 
 CREATE TABLE cart_items(
+    id serial primary key,
     cart_id int references carts(id),
     product_id int references products(id),
     quantity numeric not null,
@@ -131,6 +132,13 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION find_cart_item_by_id(idToFind int)
+RETURNS SETOF cart_items AS '
+BEGIN
+  RETURN QUERY SELECT * FROM cart_items WHERE id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION find_cart_by_id(idToFind int)
 RETURNS SETOF carts AS '
 BEGIN
@@ -146,9 +154,11 @@ END;
 ' LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity int)
-RETURNS void AS '
+RETURNS int AS '
+DECLARE idToReturn int;
 BEGIN
-  INSERT INTO cart_items(cart_id, product_id, quantity, price) VALUES (cart_id, product_id, quantity, quantity * (select price from products where id = product_id));
+  INSERT INTO cart_items(cart_id, product_id, quantity, price) VALUES (cart_id, product_id, quantity, quantity * (select price from products where id = product_id)) returning id into idToReturn;
+  RETURN idToReturn;
 END;
 ' LANGUAGE plpgsql;
 

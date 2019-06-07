@@ -130,8 +130,9 @@ function onAddToCartClicked() {
 
         if (cart === null) {
             createCart();
-            cart = getCart();
         }
+
+        cart = getCart();
 
         const quantityInputEl = document.getElementById('quantity')
         const quantity = quantityInputEl.value;
@@ -141,13 +142,21 @@ function onAddToCartClicked() {
         const params = new URLSearchParams();
         params.append('quantity', quantity);
         params.append('product-id', product_id);
-        params.append('card-id', cart_id);
+        params.append('cart-id', cart_id);
 
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', onAddToCartResponse);
         xhr.addEventListener('error', onNetworkError);
         xhr.open('POST', 'cartItem');
         xhr.send(params);
+}
+
+function onAddToCartResponse() {
+    if (this.status === OK) {
+        onPageLoad()
+    } else {
+        onOtherResponse(document.getElementById('add-to-cart-button'), this);
+    }
 }
 
 function createCart() {
@@ -161,7 +170,7 @@ function createCart() {
         const xhr = new XMLHttpRequest();
         xhr.addEventListener('load', createCartResponse);
         xhr.addEventListener('error', onNetworkError);
-        xhr.open('POST', 'cart');
+        xhr.open('POST', 'cart', false);
         xhr.send(params);
 }
 

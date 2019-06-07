@@ -76,9 +76,7 @@ public class DatabaseCartDao extends AbstractDao implements CartDao {
             connection.setAutoCommit(autoCommit);
         }
     }
-
-
-
+    
     private Cart fetchCart(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int user_id = resultSet.getInt("user_id");

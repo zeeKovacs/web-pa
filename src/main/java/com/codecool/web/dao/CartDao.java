@@ -13,4 +13,6 @@ public interface CartDao {
     Cart createCart(int user_id) throws SQLException;
 
     Cart findCartByUserId(int id) throws SQLException;
+
+    Cart assignCartToUser(int cart_id, int user_id) throws SQLException;
 }

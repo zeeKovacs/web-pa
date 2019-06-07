@@ -65,6 +65,15 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION assign_cart_to_user(whereToUpdate int, idToUpdate int)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  UPDATE carts SET user_id = idToUpdate WHERE carts.id=whereToUpdate RETURNING id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION add_product(name text, availability boolean, unit text, picture text, price numeric)
 RETURNS void AS '
 BEGIN

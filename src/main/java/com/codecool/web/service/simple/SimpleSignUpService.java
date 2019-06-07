@@ -16,15 +16,6 @@ public class SimpleSignUpService implements SignUpService {
     }
 
     @Override
-    public User addGuestUser() throws SQLException, ServiceException {
-        try {
-            return userDao.addGuestUser();
-        } catch (IllegalArgumentException ex) {
-            throw new ServiceException(ex.getMessage());
-        }
-    }
-
-    @Override
     public User addUser(String name, String email, String role, String password) throws SQLException, ServiceException {
         try {
             return userDao.addUser(name, email, role, password);

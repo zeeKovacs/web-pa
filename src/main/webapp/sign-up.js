@@ -13,6 +13,10 @@ function signUpButtonClicked() {
     params.append('name', name);
     params.append('email', email);
     params.append('password', password);
+    if (cartExists()) {
+        const cart = getCart();
+        params.append('cart-id', cart.id);
+    }
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', signUpResponse);
@@ -27,6 +31,6 @@ function signUpResponse() {
         setUser(user);
         onPageLoad();
     } else {
-        onOtherResponse(homepageContentDivEl, this);
+        onOtherResponse(document.getElementById('products-button'), this);
     }
 }

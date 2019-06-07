@@ -26,6 +26,11 @@ public class SimpleCartService implements CartService {
     }
 
     @Override
+    public Cart assignCartToUser(int cart_id, int user_id) throws SQLException {
+        return cartDao.assignCartToUser(cart_id, user_id);
+    }
+
+    @Override
     public Cart createCart(int user_id) throws SQLException {
         return cartDao.createCart(user_id);
     }

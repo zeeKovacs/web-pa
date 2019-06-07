@@ -76,7 +76,26 @@ public class DatabaseCartDao extends AbstractDao implements CartDao {
             connection.setAutoCommit(autoCommit);
         }
     }
-    
+
+    @Override
+    public Cart assignCartToUser(int cart_id, int user_id) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT assign_cart_to_user(?,?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, cart_id);
+            statement.setInt(2, user_id);
+            int returned_id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(returned_id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
     private Cart fetchCart(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int user_id = resultSet.getInt("user_id");

@@ -28,7 +28,7 @@ function showSpecificContent() {
         alert('User.');
     } else {
         alert('Guest.');
-        showContents(['login-button']);
+        showContents(['login-button', 'sign-up-button']);
     }
 }
 

@@ -22,9 +22,15 @@ public class CartServlet extends AbstractServlet {
             CartDao userDao = new DatabaseCartDao(connection);
             CartService cartService = new SimpleCartService(userDao);
 
-            int cart_id = Integer.valueOf(req.getParameter("cart-id"));
-
-            Cart cart = cartService.findById(cart_id);
+            int user_id = 0;
+            Cart cart = null;
+            if (req.getParameter("user-id") != null) {
+                user_id = Integer.valueOf(req.getParameter("user-id"));
+                cart = cartService.findCartByUserId(user_id);
+            } else {
+                int cart_id = Integer.valueOf(req.getParameter("cart-id"));
+                cart = cartService.findById(cart_id);
+            }
 
             sendMessage(resp, HttpServletResponse.SC_OK, cart);
         } catch (SQLException ex) {

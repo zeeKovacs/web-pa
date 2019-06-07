@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface UserDao {
 
-    User addGuestUser() throws SQLException;
-
     List<User> findAll() throws SQLException;
 
     User findById(int id) throws SQLException;

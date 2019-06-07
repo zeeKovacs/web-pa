@@ -10,4 +10,8 @@ public class Cart extends AbstractModel {
         this.user_id = user_id;
         this.price = price;
     }
+
+    public int getUserId() {
+        return this.user_id;
+    }
 }

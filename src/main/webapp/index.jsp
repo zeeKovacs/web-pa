@@ -16,38 +16,41 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <div id="page-content">
-            <nav id="top-nav">
-                <p>GROCERY STORE, EGER</p><br>
-                <button id="products-button" onclick="onProductsButtonClicked();">Products</button>
-                <button id="cart-button" onclick="onCartButtonClicked()" class="hidden content">Cart</button>
-                <button id="orders-button" onclick="onOrdersButtonClicked();" class="hidden content">Sign Up</button>
-                <button id="sign-up-button" onclick="onSignUpButtonClicked();" class="hidden content">Sign Up</button>
-                <button id="login-button" onclick="onLoginButtonClicked();" class="hidden content">Login</button>
-                <button id="logout-button" onclick="onLogoutButtonClicked();" class="hidden content">Logout</button>
-            </nav>
-            <div id="products-content" class="hidden content"></div>
-            <div id="product-page" class="hidden content"></div>
-            <div id="login-content" class="hidden content">
-                <form id="login-form" onsubmit="return false;">
-                    <input type="email" name="email" placeholder="email address"><br>
-                    <input type="password" name="password" placeholder="password"><br>
-                    <button id="login-button" onclick="loginButtonClicked();">Login</button>
-                </form>
-            </div>
-            <div id="sign-up-content" class="hidden content">
-                <form id="sign-up-form" onsubmit="return false;">
-                    <input type="text" name="name" placeholder="name">
-                    <input type="email" name="email" placeholder="email">
-                    <input type="password" name="password" placeholder="password">
-                    <button id="sign-up-button" onclick="signUpButtonClicked();">Sign Up</button>
-                </form>
-            </div>
-            <div id="profile-content" class="hidden content"></div>
-            <div id="cart-content" class="hidden content"</div>
+    <div id="page-content">
+        <nav id="top-nav">
+            <p>GROCERY STORE, EGER</p><br>
+            <button id="products-button" onclick="onProductsButtonClicked();">Products</button>
+            <button id="cart-button" onclick="onCartButtonClicked()" class="hidden content">Cart</button>
+            <button id="orders-button" onclick="onOrdersButtonClicked();" class="hidden content">Orders</button>
+            <button id="sign-up-button" onclick="onSignUpButtonClicked();" class="hidden content">Sign Up</button>
+            <button id="login-button" onclick="onLoginButtonClicked();" class="hidden content">Login</button>
+            <button id="logout-button" onclick="onLogoutButtonClicked();" class="hidden content">Logout</button>
+        </nav>
+        <div id="products-content" class="hidden content wrapper"></div>
+        <div id="product-page" class="hidden content wrapper"></div>
+        <div id="profile-content" class="hidden content wrapper"></div>
+        <div id="cart-content" class="hidden content wrapper"></div>
+        <div id="login-content" class="hidden content">
+            <form id="login-form" onsubmit="return false;">
+                <input type="email" name="email" placeholder="email address"><br>
+                <input type="password" name="password" placeholder="password"><br>
+                <button id="login-button" onclick="loginButtonClicked();">Login</button>
+            </form>
         </div>
-     </div>
+        <div id="sign-up-content" class="hidden content">
+            <form id="sign-up-form" onsubmit="return false;">
+                <input type="text" name="name" placeholder="name">
+                <input type="email" name="email" placeholder="email">
+                <input type="password" name="password" placeholder="password">
+                <button id="sign-up-button" onclick="signUpButtonClicked();">Sign Up</button>
+            </form>
+        </div>
+        <div id="checkout-content" class="hidden content">
+            <form id="checkout-form" onsubmi="return false;">
+                <input type="email" name="email" placeholder="email">
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>

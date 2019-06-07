@@ -1,10 +1,10 @@
-package com.codecool.web.dao;
+package com.codecool.web.service;
 
 import com.codecool.web.model.Cart;
 
 import java.sql.SQLException;
 
-public interface CartDao {
+public interface CartService {
 
     Cart findById(int id) throws SQLException;
 

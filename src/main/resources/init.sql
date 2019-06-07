@@ -72,9 +72,20 @@ END;
 ' LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION add_cart(user_id int)
-RETURNS void AS '
+RETURNS int AS '
+DECLARE idToReturn int;
 BEGIN
-  INSERT INTO carts(user_id) VALUES (user_id);
+  INSERT INTO carts(user_id) VALUES (user_id) returning id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_guest_cart()
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  INSERT INTO carts default values returning id into idToReturn;
+  RETURN idToReturn;
 END;
 ' LANGUAGE plpgsql;
 
@@ -120,6 +131,13 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION find_cart_by_id(idToFind int)
+RETURNS SETOF carts AS '
+BEGIN
+  RETURN QUERY SELECT * FROM carts WHERE id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION find_product_by_id(idToFind int)
 RETURNS SETOF products AS '
 BEGIN
@@ -147,3 +165,5 @@ select add_product('banana', true, 'kg', 'images/banana.jpeg', 470);
 select add_cart(1);
 
 select add_cart_item(1, 1, 4);
+select add_cart_item(1, 2, 3);
+select add_cart_item(1, 3, 2);

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductDao {
 
-    Product findProductById(int id) throws SQLException;
-
     List<Product> findAll() throws SQLException;
+
+    Product findProductById(int id) throws SQLException;
 }

@@ -2,7 +2,7 @@ function loginResponse() {
     if (this.status === OK) {
         const user = JSON.parse(this.responseText);
         setUser(user);
-        onPageLoad(user);
+        showSpecificContent();
     } else {
         onOtherResponse(loginContentDivEl, this);
     }

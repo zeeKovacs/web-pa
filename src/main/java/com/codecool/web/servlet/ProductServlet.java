@@ -3,6 +3,7 @@ package com.codecool.web.servlet;
 import com.codecool.web.dao.ProductDao;
 import com.codecool.web.dao.database.DatabaseProductDao;
 import com.codecool.web.model.Product;
+import com.codecool.web.service.ProductService;
 import com.codecool.web.service.simple.SimpleProductService;
 
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class ProductServlet extends AbstractServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = getConnection(req.getServletContext())) {
             ProductDao productDao = new DatabaseProductDao(connection);
-            SimpleProductService productService = new SimpleProductService(productDao);
+            ProductService productService = new SimpleProductService(productDao);
 
             List<Product> products = productService.findAll();
 

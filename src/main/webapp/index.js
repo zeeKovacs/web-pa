@@ -6,6 +6,7 @@ const INTERNAL_SERVER_ERROR = 500;
 
 let loginContentDivEl;
 let signUpContentDivEl;
+let logoutButtonEl;
 
 function newInfo(targetEl, message) {
     newMessage(targetEl, 'info', message);
@@ -91,6 +92,14 @@ function getCart() {
     return JSON.parse(localStorage.getItem('cart'));
 }
 
+function cartExists() {
+    return localStorage.getItem('cart') !== null;
+}
+
+function userExists() {
+    return localStorage.getItem('user') !== null;
+}
+
 function emptyStorage() {
     return localStorage.removeItem('user', 'cart');
 }
@@ -116,6 +125,7 @@ function isUserUser() {
 function onLoad() {
     loginContentDivEl = document.getElementById('login-content');
     signUpContentDivEl = document.getElementById('sign-up-content');
+    logoutButtonEl = document.getElementById('logout-button');
 
     onPageLoad();
 }

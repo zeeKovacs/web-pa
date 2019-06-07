@@ -1,14 +1,34 @@
 function onPageLoad() {
     clearMessages();
-    if (isUserAdmin()) {
-        alert('Admin user.');
-        showContents(['logout-button', 'orders-button']);
-    } if (isUserUser()) {
-        alert('User user.');
-        showContents(['logout-button', 'orders-button']);
+    if (userExists()) {
+        const user = getUser();
+
+        const email = user.email;
+        const password = user.password;
+
+        const params = new URLSearchParams();
+        params.append('email', email);
+        params.append('password', password);
+
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', loginResponse);
+        xhr.addEventListener('error', onNetworkError);
+        xhr.open('POST', 'login');
+        xhr.send(params);
+    }
+    showSpecificContent();
+}
+
+function showSpecificContent() {
+    const user = getUser()
+
+    if (userExists() && user.role === 'ADMIN') {
+        alert('Admin.');
+    } else if (userExists() && user.role === 'USER') {
+        alert('User.');
     } else {
-        alert('No user.');
-        showContents(['login-button', 'sign-up-button', 'cart-button']);
+        alert('Guest.');
+        showContents(['login-button']);
     }
 }
 
@@ -21,7 +41,7 @@ function onSignUpButtonClicked() {
 }
 
 function onProductsButtonClicked() {
-    showContents(['products-content']);
+    showContents(['login-button', 'sign-up-button', 'cart-button', 'products-content']);
 
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onProductsReceived);
@@ -60,6 +80,7 @@ function fillProductsContent(products) {
 function onProductClicked(evt) {
     showContents(['login-button', 'sign-up-button', 'cart-button', 'product-page']);
     const productContentEl = document.getElementById('product-page');
+    removeAllChildren(productContentEl);
 
     const product = evt.target.product;
 
@@ -86,6 +107,7 @@ function onProductClicked(evt) {
 
     const buttonEl = document.createElement('button');
     buttonEl.textContent = 'Add to cart';
+    buttonEl.id = 'add-to-cart-button';
     buttonEl.setAttribute('product-id', product.id);
     buttonEl.addEventListener('click', onAddToCartClicked);
 
@@ -104,4 +126,50 @@ function calcProductPrice(evt) {
 }
 
 function onAddToCartClicked() {
+        let cart = getCart();
+
+        if (cart === null) {
+            createCart();
+            cart = getCart();
+        }
+
+        const quantityInputEl = document.getElementById('quantity')
+        const quantity = quantityInputEl.value;
+        const product_id = this.getAttribute("product-id");
+        const cart_id = cart.id;
+
+        const params = new URLSearchParams();
+        params.append('quantity', quantity);
+        params.append('product-id', product_id);
+        params.append('card-id', cart_id);
+
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', onAddToCartResponse);
+        xhr.addEventListener('error', onNetworkError);
+        xhr.open('POST', 'cartItem');
+        xhr.send(params);
+}
+
+function createCart() {
+        const user = getUser()
+
+        const params = new URLSearchParams();
+        if (user !== null) {
+            params.append('user-id', user.id);
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', createCartResponse);
+        xhr.addEventListener('error', onNetworkError);
+        xhr.open('POST', 'cart');
+        xhr.send(params);
+}
+
+function createCartResponse() {
+    if (this.status === OK) {
+        const cart = JSON.parse(this.responseText);
+        setCart(cart);
+    } else {
+        onOtherResponse(document.getElementById('add-to-cart-button'), this);
+    }
 }

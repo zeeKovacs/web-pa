@@ -52,21 +52,11 @@ button:hover {
     background-image: url('images/background.jpg');
 }
 
-#products-content {
-    left: 15%;
-    width: 70%;
-    margin: 20px;
-    padding: 10px;
-    background: white;
-    position: absolute;
-    border-radius: 4px;
-}
-
 #products-content img {
     padding: 18px;
 }
 
-#product-page {
+.wrapper {
     left: 25%;
     width: 50%;
     margin: 20px;
@@ -74,6 +64,11 @@ button:hover {
     background: white;
     position: absolute;
     border-radius: 4px;
+}
+
+#products-content {
+    width: 75%;
+    left: 12.5%;
 }
 
 #product-page img {
@@ -88,15 +83,6 @@ button:hover {
 #products-content img:hover {
     transition-duration: 0.3s;
     box-shadow: inset 0 0 3pt 2pt black;
-}
-
-#cart-content {
-    top: 5%;
-    height: 300px;
-    width: 300px;
-    float: right;
-    position: sticky;
-    background-color: black;
 }
 
 .error {

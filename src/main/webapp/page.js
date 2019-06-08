@@ -221,7 +221,6 @@ function cartContentResponse() {
 
 function fillCartContent(cartItems) {
     const cartContentEl = document.getElementById('cart-content');
-    const ulEl = document.createElement('ul');
     let total = 0;
 
         for (let i = 0; i < cartItems.length; i++) {
@@ -235,10 +234,51 @@ function fillCartContent(cartItems) {
             const pEl = document.createElement('p');
             pEl.textContent = item.name + ' ' + item.quantity + '' + item.unit + ' ' + item.price + ' ft';
 
-            const liEl = document.createElement('li');
-            liEl.appendChild(picEl);
-            liEl.appendChild(pEl);
-            ulEl.appendChild(liEl);
+            const removeButtonEl = document.createElement('button');
+            removeButtonEl.setAttribute('item-id', item.id);
+            removeButtonEl.textContent = 'X';
+            removeButtonEl.addEventListener('click', removeButtonClicked)
+
+            pEl.appendChild(removeButtonEl);
+
+            cartContentEl.appendChild(picEl);
+            cartContentEl.appendChild(pEl);
         }
-        cartContentEl.appendChild(ulEl);
+        const priceEl = document.createElement('p');
+        priceEl.textContent = 'Total: ' + total + ' ft  - ';
+
+        const cart = getCart();
+        const buttonEl = document.createElement('button');
+        buttonEl.textContent = 'Checkout';
+        buttonEl.id = 'remove-button';
+        buttonEl.setAttribute('cart-id', cart.id);
+        buttonEl.addEventListener('click', checkoutButtonClicked);
+
+        priceEl.appendChild(buttonEl);
+
+        cartContentEl.appendChild(priceEl);
+}
+
+function checkoutButtonClicked() {
+}
+
+function removeButtonClicked() {
+    const id = this.getAttribute('item-id');
+
+    const params = new URLSearchParams;
+    params.append('item-id', id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', removeItemResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('DELETE', 'cartItem?' + params.toString());
+    xhr.send();
+}
+
+function removeItemResponse() {
+    if (this.status === OK) {
+        onCartButtonClicked();
+    } else {
+        onOtherResponse(document.getElementById('remove-button'), this);
+    }
 }

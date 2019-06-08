@@ -101,7 +101,8 @@ function userExists() {
 }
 
 function emptyStorage() {
-    return localStorage.removeItem('user', 'cart');
+    localStorage.removeItem('cart');
+    return localStorage.removeItem('user');
 }
 
 function isUserAdmin() {

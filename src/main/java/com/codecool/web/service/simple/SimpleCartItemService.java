@@ -21,6 +21,11 @@ public class SimpleCartItemService implements CartItemService {
     }
 
     @Override
+    public void removeItemFromCart(int item_id) throws SQLException {
+        cartItemDao.removeItemFromCart(item_id);
+    }
+
+    @Override
     public List<CartItem> findCartItemsByCartId(int cart_id) throws SQLException {
         return cartItemDao.findCartItemsByCartId(cart_id);
     }

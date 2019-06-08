@@ -49,4 +49,20 @@ public class CartItemServlet extends AbstractServlet {
             handleSqlError(resp, ex);
         }
     }
+
+    @Override
+    public void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            CartItemDao cartItemDao = new DatabaseCartItemDao(connection);
+            CartItemService cartItemService = new SimpleCartItemService(cartItemDao);
+
+            int item_id = Integer.valueOf(req.getParameter("item-id"));
+
+            cartItemService.removeItemFromCart(item_id);
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
+    }
 }

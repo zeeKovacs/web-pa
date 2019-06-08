@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS cart_items CASCADE;
 DROP TABLE IF EXISTS carts CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
 
 CREATE TABLE users(
     id serial primary key,
@@ -33,6 +34,16 @@ CREATE TABLE cart_items(
     product_id int references products(id),
     quantity numeric not null,
     price numeric not null
+);
+
+CREATE TABLE orders(
+    id serial primary key,
+    user_id int references users(id) default null,
+    cart_id int references carts(id),
+    name text,
+    email text,
+    confirmed boolean default false,
+    complete boolean default false
 );
 
 create or replace function total_cart_price()
@@ -168,6 +179,13 @@ DECLARE idToReturn int;
 BEGIN
   INSERT INTO cart_items(cart_id, product_id, quantity, price) VALUES (cart_id, product_id, quantity, quantity * (select price from products where id = product_id)) returning id into idToReturn;
   RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION remove_cart_item(idToRemove int)
+RETURNS void AS '
+BEGIN
+    DELETE from cart_items where id=idToRemove;
 END;
 ' LANGUAGE plpgsql;
 

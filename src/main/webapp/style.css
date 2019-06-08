@@ -78,11 +78,13 @@ button:hover {
 }
 
 .wrapper p {
-    font-size: 26pt;
+    font-size: 40px;
+    padding: 76px 14px 76px 14px;
 }
 
-.wrapper ul {
-    display: inline-block;
+#cart-content img {
+    clear: left;
+    display: block;
 }
 
 #products-content img:hover {

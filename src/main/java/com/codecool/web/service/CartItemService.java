@@ -10,4 +10,6 @@ public interface CartItemService {
     List<CartItem> findCartItemsByCartId(int cart_id) throws SQLException;
 
     CartItem addToCart(int cart_id, int product_id, int quantity) throws SQLException;
+
+    void removeItemFromCart(int item_id) throws SQLException;
 }

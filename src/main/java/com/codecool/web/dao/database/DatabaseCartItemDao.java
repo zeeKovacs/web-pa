@@ -65,6 +65,15 @@ public class DatabaseCartItemDao extends AbstractDao implements CartItemDao {
         return null;
     }
 
+    @Override
+    public void removeItemFromCart(int item_id) throws SQLException {
+        String sql = "SELECT remove_cart_item(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, item_id);
+            statement.execute();
+        }
+    }
+
     private CartItem fetchCartItem(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         int quantity = resultSet.getInt("quantity");

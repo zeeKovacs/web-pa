@@ -11,5 +11,7 @@ public interface OrderDao {
 
     List<Order> findAll() throws SQLException;
 
-    Order createOrder() throws SQLException;
+    Order createUserOrder(int cart_id, int user_id) throws SQLException;
+
+    Order createGuestOrder(int cart_id, String name, String email) throws SQLException;
 }

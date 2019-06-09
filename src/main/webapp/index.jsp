@@ -46,8 +46,10 @@
             </form>
         </div>
         <div id="checkout-content" class="hidden content">
-            <form id="checkout-form" onsubmi="return false;">
+            <form id="checkout-form" onsubmit="return false;">
+                <input type="text" name="name" placeholder="name">
                 <input type="email" name="email" placeholder="email">
+                <button id="checkout-form-button" onclick="onCheckoutButtonClicked();">Checkout</button>
             </form>
         </div>
     </div>

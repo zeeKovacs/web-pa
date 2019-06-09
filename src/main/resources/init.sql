@@ -110,10 +110,37 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION add_user_order(cart_id int, user_id int)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  INSERT INTO orders(cart_id, user_id, name, email) values (cart_id, user_id, (SELECT name from users where id=user_id), (SELECT email from users where id=user_id)) returning id into idToReturn;
+  UPDATE carts SET checked_out = true where id=cart_id;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_guest_order(cart_id int, name text, email text)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  INSERT INTO orders(cart_id, name, email) values (cart_id, name, email) returning id into idToReturn;
+  UPDATE carts SET checked_out = true where id=cart_id;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION find_all_user()
 RETURNS SETOF users AS '
 BEGIN
   RETURN QUERY SELECT * FROM users;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_all_orders()
+RETURNS SETOF orders AS '
+BEGIN
+  RETURN QUERY SELECT * FROM orders;
 END;
 ' LANGUAGE plpgsql;
 
@@ -134,7 +161,7 @@ END;
 CREATE OR REPLACE FUNCTION find_cart_by_user_id(idToFind int)
 RETURNS SETOF carts AS '
 BEGIN
-  RETURN QUERY SELECT * FROM carts WHERE user_id=idToFind;
+  RETURN QUERY SELECT * FROM carts WHERE id=(SELECT max(id) from carts where user_id=idToFind) and user_id=idToFind;
 END;
 ' LANGUAGE plpgsql;
 
@@ -151,6 +178,14 @@ BEGIN
   RETURN QUERY SELECT * FROM users WHERE id=idToFind;
 END;
 ' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_order_by_id(idToFind int)
+RETURNS SETOF orders AS '
+BEGIN
+  RETURN QUERY SELECT * FROM orders WHERE id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION find_cart_item_by_id(idToFind int)
 RETURNS TABLE (id int, quantity numeric, unit text, price numeric, name text, picture text) AS '

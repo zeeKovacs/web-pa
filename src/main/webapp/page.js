@@ -23,13 +23,10 @@ function showSpecificContent(additional) {
     const user = getUser()
 
     if (userExists() && user.role === 'ADMIN') {
-        alert('Admin.');
         showContents(['orders-button', 'logout-button', additional]);
     } else if (userExists() && user.role === 'USER') {
-        alert('User.');
         showContents(['cart-button', 'orders-button', 'logout-button', additional]);
     } else {
-        alert('Guest.');
         showContents(['cart-button', 'login-button', 'sign-up-button', additional]);
     }
 }
@@ -237,6 +234,7 @@ function fillCartContent(cartItems) {
             const removeButtonEl = document.createElement('button');
             removeButtonEl.setAttribute('item-id', item.id);
             removeButtonEl.textContent = 'X';
+            removeButtonEl.id = 'remove-button';
             removeButtonEl.addEventListener('click', removeButtonClicked)
 
             pEl.appendChild(removeButtonEl);
@@ -250,7 +248,7 @@ function fillCartContent(cartItems) {
         const cart = getCart();
         const buttonEl = document.createElement('button');
         buttonEl.textContent = 'Checkout';
-        buttonEl.id = 'remove-button';
+        buttonEl.id = 'checkout-button';
         buttonEl.setAttribute('cart-id', cart.id);
         buttonEl.addEventListener('click', checkoutButtonClicked);
 
@@ -260,6 +258,24 @@ function fillCartContent(cartItems) {
 }
 
 function checkoutButtonClicked() {
+    if (userExists()) {
+        const user = getUser();
+        const cart = getCart();
+
+        const params = new URLSearchParams;
+        params.append('cart-id', cart.id)
+        params.append('user-id', user.id);
+
+        emptyStorageCart();
+
+        const xhr = new XMLHttpRequest();
+        xhr.addEventListener('load', checkoutResponse);
+        xhr.addEventListener('error', onNetworkError);
+        xhr.open('POST', 'orders');
+        xhr.send(params);
+    } else {
+        guestOrder();
+    }
 }
 
 function removeButtonClicked() {
@@ -281,4 +297,40 @@ function removeItemResponse() {
     } else {
         onOtherResponse(document.getElementById('remove-button'), this);
     }
+}
+
+function checkoutResponse() {
+    if (this.status === OK) {
+        const cart = JSON.parse(this.responseText);
+        setCart(cart);
+        onCartButtonClicked();
+    } else {
+        onOtherResponse(document.getElementById('checkout-form-button'), this);
+    }
+}
+
+function guestOrder() {
+    showSpecificContent('checkout-content');
+}
+
+function onCheckoutButtonClicked() {
+    const cart = getCart();
+    const loginFormEl = document.forms['checkout-form'];
+
+    const nameInputEl = loginFormEl.querySelector('input[name="name"]');
+    const emailInputEl = loginFormEl.querySelector('input[name="email"]');
+
+    const name = nameInputEl.value;
+    const email = emailInputEl.value;
+
+    const params = new URLSearchParams();
+    params.append('name', name);
+    params.append('email', email);
+    params.append('cart-id', cart.id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', checkoutResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'orders');
+    xhr.send(params);
 }

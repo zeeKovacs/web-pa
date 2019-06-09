@@ -105,6 +105,10 @@ function emptyStorage() {
     return localStorage.removeItem('user');
 }
 
+function emptyStorageCart() {
+    return localStorage.removeItem('cart');
+}
+
 function isUserAdmin() {
     const user = getUser();
     if (user === null) {

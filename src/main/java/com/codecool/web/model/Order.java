@@ -18,4 +18,28 @@ public class Order extends AbstractModel {
         this.confirmed = confirmed;
         this.complete = complete;
     }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public int getCart_id() {
+        return cart_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public boolean isComplete() {
+        return complete;
+    }
 }

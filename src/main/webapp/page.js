@@ -90,7 +90,7 @@ function onProductClicked(evt) {
     const inputEl = document.createElement('input');
     inputEl.type = 'number';
     if (product.unit === 'kg') {
-        inputEl.setAttribute('step', '0.1');
+        inputEl.setAttribute('step', '1');
         inputEl.setAttribute('placeholder', 'Kilogrammes');
     } else {
         inputEl.setAttribute('step', '1');
@@ -119,6 +119,7 @@ function onProductClicked(evt) {
 
 function calcProductPrice(evt) {
     const quantity = document.getElementById('quantity').value;
+    console.log(quantity);
     const product = evt.target.product;
 
     const pEl = document.getElementById('dynamic-price');
@@ -333,4 +334,128 @@ function onCheckoutButtonClicked() {
     xhr.addEventListener('error', onNetworkError);
     xhr.open('POST', 'orders');
     xhr.send(params);
+}
+
+function onOrdersButtonClicked() {
+    showSpecificContent('orders-content');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', onOrdersReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'orders');
+    xhr.send();
+}
+
+function onOrdersReceived() {
+    const text = this.responseText;
+    const orders = JSON.parse(text);
+    fillOrders(orders);
+}
+
+function fillOrders(orders) {
+    const ordersContentEl = document.getElementById('orders-content');
+    removeAllChildren(ordersContentEl);
+
+    for (let i = 0; i < orders.length; i++) {
+        const order = orders[i];
+        if (getUser().role === 'ADMIN') {
+            if (order.complete === false) {
+                const pEl = document.createElement('p');
+                pEl.textContent = 'Name: ' + order.name;
+
+                const detButtonEl = document.createElement('button');
+                detButtonEl.textContent = 'Details';
+                detButtonEl.order = order;
+                detButtonEl.addEventListener('click', onDetailsButtonClicked);
+
+                const confButtonEl = document.createElement('button');
+                confButtonEl.textContent = 'Confirm';
+                confButtonEl.setAttribute('order-id', order.id)
+                confButtonEl.addEventListener('click', onConfirmButtonClicked);
+
+                const compButtonEl = document.createElement('button');
+                compButtonEl.textContent = 'Complete';
+                compButtonEl.setAttribute('order-id', order.id)
+                compButtonEl.addEventListener('click', onCompButtonClicked);
+
+                const detailsDivEl = document.createElement('div');
+                detailsDivEl.setAttribute('id', 'detailsDiv' + order.id)
+
+                pEl.appendChild(detButtonEl);
+                pEl.appendChild(confButtonEl);
+                pEl.appendChild(compButtonEl);
+                ordersContentEl.appendChild(pEl);
+                ordersContentEl.appendChild(detailsDivEl);
+            }
+        } else if (getUser().role === 'USER') {
+            if (order.user_id === getUser().id) {
+                const pEl = document.createElement('p');
+                pEl.textContent = 'Order number: ' + order.id + ' Confirmed: ' + order.confirmed + ' Complete: ' + order.complete;
+
+                const detButtonEl = document.createElement('button');
+                detButtonEl.textContent = 'Details';
+                detButtonEl.order = order;
+                detButtonEl.addEventListener('click', onDetailsButtonClicked);
+
+                const detailsDivEl = document.createElement('div');
+                detailsDivEl.setAttribute('id', 'detailsDiv' + order.id)
+
+                pEl.appendChild(detButtonEl);
+                ordersContentEl.appendChild(pEl)
+                ordersContentEl.appendChild(detailsDivEl);
+            }
+        }
+    }
+}
+
+function onDetailsButtonClicked(evt) {
+    const order = evt.target.order;
+
+    const params = new URLSearchParams();
+    params.append('cart-id', order.cart_id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', orderDetailsReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('GET', 'cartItem?' + params.toString());
+    xhr.order = order;
+    xhr.send();
+}
+
+function orderDetailsReceived(evt) {
+    const text = this.responseText;
+    const details = JSON.parse(text);
+    showOrderDetails(details, evt);
+}
+
+function showOrderDetails(details, evt) {
+    const order = evt.target.order;
+    const detailsDivEl = document.getElementById('detailsDiv' + order.id);
+    removeAllChildren(detailsDivEl);
+
+    let total = 0;
+
+    for (let i = 0; i < details.length; i++) {
+        const detail = details[i];
+
+        total += detail.price;
+
+        const pEl = document.createElement('p');
+        pEl.textContent = detail.name + ' ' + detail.quantity + '' + detail.unit + ' ' + detail.price + ' ft';
+
+        detailsDivEl.appendChild(pEl);
+    }
+
+    const totalEl = document.createElement('p');
+    totalEl.textContent = 'Total: ' + total + ' Ft';
+
+    detailsDivEl.appendChild(totalEl);
+}
+
+function onConfirmButtonClicked() {
+
+}
+
+function onCompButtonClicked() {
+    ///put request to order servlet set complete boolean to true
 }

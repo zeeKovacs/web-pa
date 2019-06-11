@@ -208,7 +208,7 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity int)
+CREATE OR REPLACE FUNCTION add_cart_item(cart_id int, product_id int, quantity numeric)
 RETURNS int AS '
 DECLARE idToReturn int;
 BEGIN

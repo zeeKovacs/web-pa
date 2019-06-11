@@ -29,6 +29,7 @@
         <div id="products-content" class="hidden content wrapper"></div>
         <div id="product-page" class="hidden content wrapper"></div>
         <div id="profile-content" class="hidden content wrapper"></div>
+        <div id="orders-content" class="hidden content wrapper"></div>
         <div id="cart-content" class="hidden content wrapper"></div>
         <div id="login-content" class="hidden content">
             <form id="login-form" onsubmit="return false;">

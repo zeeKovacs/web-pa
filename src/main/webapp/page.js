@@ -61,18 +61,51 @@ function fillProductsContent(products) {
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
+        if (getUser().role === 'ADMIN') {
+            const pEl = document.createElement('p');
+            pEl.textContent = 'Product: ' + product.name + ' Available: ' + product.availability;
 
-        const aEl = document.createElement('a');
-        aEl.href='javascript:void(0);';
-        aEl.setAttribute('data-product-id', product.id);
-        aEl.addEventListener('click', onProductClicked);
+            const setterButtonEl = document.createElement('button');
+            setterButtonEl.textContent = 'Change';
+            setterButtonEl.setAttribute('product-id', product.id);
+            setterButtonEl.addEventListener('click', setterButtonClicked);
 
-        const picEl = document.createElement('img');
-        picEl.setAttribute('src', product.picture);
-        picEl.product = product;
-        aEl.appendChild(picEl);
+            pEl.appendChild(setterButtonEl);
+            productsContentEl.appendChild(pEl);
 
-        productsContentEl.appendChild(aEl);
+        } else if (product.availability === true) {
+            const aEl = document.createElement('a');
+            aEl.href='javascript:void(0);';
+            aEl.setAttribute('data-product-id', product.id);
+            aEl.addEventListener('click', onProductClicked);
+
+            const picEl = document.createElement('img');
+            picEl.setAttribute('src', product.picture);
+            picEl.product = product;
+            aEl.appendChild(picEl);
+
+            productsContentEl.appendChild(aEl);
+        }
+    }
+}
+
+function setterButtonClicked() {
+    const id = this.getAttribute('product-id');
+    const params = new URLSearchParams();
+    params.append('product-id', id);
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', productSetterResponse);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('POST', 'product');
+    xhr.send(params);
+}
+
+function productSetterResponse() {
+    if (this.status === OK) {
+        onProductsButtonClicked()
+    } else {
+        onOtherResponse(document.getElementById('products-button'), this);
     }
 }
 
@@ -453,9 +486,45 @@ function showOrderDetails(details, evt) {
 }
 
 function onConfirmButtonClicked() {
+    const id = this.getAttribute('order-id');
 
+    const params = new URLSearchParams();
+    params.append('order-id', id);
+    params.append('option', 'confirm');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', confirmResponseReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'orders?' + params.toString());
+    xhr.send();
 }
 
 function onCompButtonClicked() {
-    ///put request to order servlet set complete boolean to true
+    const id = this.getAttribute('order-id');
+
+    const params = new URLSearchParams();
+    params.append('order-id', id);
+    params.append('option', 'complete');
+
+    const xhr = new XMLHttpRequest();
+    xhr.addEventListener('load', completeResponseReceived);
+    xhr.addEventListener('error', onNetworkError);
+    xhr.open('PUT', 'orders?' + params.toString());
+    xhr.send();
+}
+
+function completeResponseReceived() {
+    if (this.status === OK) {
+        onOrdersButtonClicked();
+    } else {
+        onOtherResponse(document.getElementById('orders-content'), this);
+    }
+}
+
+function confirmResponseReceived() {
+    if (this.status === OK) {
+        onOrdersButtonClicked();
+    } else {
+        onOtherResponse(document.getElementById('orders-content'), this);
+    }
 }

@@ -28,6 +28,38 @@ public class DatabaseProductDao extends AbstractDao implements ProductDao {
     }
 
     @Override
+    public Product setAvailability(int product_id) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT set_product_availability(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, product_id);
+            int returned_id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(returned_id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public Product findById(int id) throws SQLException {
+        String sql = "SELECT * from find_product_by_id(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return fetchProduct(resultSet);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Product> findAll() throws SQLException {
         String sql = "SELECT * from find_all_products()";
         try (Statement statement = connection.createStatement();

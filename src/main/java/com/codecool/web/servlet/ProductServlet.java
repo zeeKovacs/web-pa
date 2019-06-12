@@ -29,4 +29,18 @@ public class ProductServlet extends AbstractServlet {
             handleSqlError(resp, ex);
         }
     }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            ProductDao productDao = new DatabaseProductDao(connection);
+            ProductService productService = new SimpleProductService(productDao);
+
+            int product_id = Integer.valueOf(req.getParameter("product-id"));
+            Product product = productService.setAvailability(product_id);
+
+            sendMessage(resp, HttpServletResponse.SC_OK, product);
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
+    }
 }

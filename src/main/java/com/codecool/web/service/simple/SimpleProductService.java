@@ -16,6 +16,11 @@ public class SimpleProductService implements ProductService {
     }
 
     @Override
+    public Product setAvailability(int product_id) throws SQLException {
+        return productDao.setAvailability(product_id);
+    }
+
+    @Override
     public List<Product> findAll() throws SQLException {
         return productDao.findAll();
     }

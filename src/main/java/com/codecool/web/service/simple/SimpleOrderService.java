@@ -21,6 +21,16 @@ public class SimpleOrderService implements OrderService {
     }
 
     @Override
+    public Order completeOrder(int order_id) throws SQLException {
+        return orderDao.completeOrder(order_id);
+    }
+
+    @Override
+    public Order confirmOrder(int order_id) throws SQLException {
+        return orderDao.confirmOrder(order_id);
+    }
+
+    @Override
     public Order createUserOrder(int cart_id, int user_id) throws SQLException {
         return orderDao.createUserOrder(cart_id, user_id);
     }

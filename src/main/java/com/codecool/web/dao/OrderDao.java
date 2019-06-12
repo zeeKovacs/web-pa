@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface OrderDao {
 
+    Order confirmOrder(int order_id) throws SQLException;
+
+    Order completeOrder(int order_id) throws SQLException;
+
     Order findById(int id) throws SQLException;
 
     List<Order> findAll() throws SQLException;

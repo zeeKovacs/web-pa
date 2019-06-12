@@ -67,20 +67,38 @@ BEGIN
 END;
 ' LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION update_user(idToUpdate int, newName text, newEmail text, newRole text, newPassword varchar(8), new_phone_number varchar(15))
-RETURNS int AS '
-DECLARE idToReturn int;
-BEGIN
-  UPDATE users SET name=newName, email=newEmail, role=''USER'', password=newPassword, phone_number=new_phone_number WHERE users.id=idToUpdate RETURNING id into idToReturn;
-  RETURN idToReturn;
-END;
-' LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION assign_cart_to_user(whereToUpdate int, idToUpdate int)
 RETURNS int AS '
 DECLARE idToReturn int;
 BEGIN
   UPDATE carts SET user_id = idToUpdate WHERE carts.id=whereToUpdate RETURNING id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION complete_order(whereToUpdate int)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  UPDATE orders SET complete=true WHERE orders.id=whereToUpdate RETURNING id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION confirm_order(whereToUpdate int)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  UPDATE orders SET confirmed=true WHERE orders.id=whereToUpdate RETURNING id into idToReturn;
+  RETURN idToReturn;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION set_product_availability(whereToUpdate int)
+RETURNS int AS '
+DECLARE idToReturn int;
+BEGIN
+  UPDATE products SET availability = NOT availability WHERE products.id=whereToUpdate RETURNING id into idToReturn;
   RETURN idToReturn;
 END;
 ' LANGUAGE plpgsql;
@@ -176,6 +194,13 @@ CREATE OR REPLACE FUNCTION find_user_by_id(idToFind int)
 RETURNS SETOF users AS '
 BEGIN
   RETURN QUERY SELECT * FROM users WHERE id=idToFind;
+END;
+' LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION find_product_by_id(idToFind int)
+RETURNS SETOF products AS '
+BEGIN
+  RETURN QUERY SELECT * FROM products WHERE id=idToFind;
 END;
 ' LANGUAGE plpgsql;
 

@@ -9,5 +9,9 @@ public interface ProductDao {
 
     List<Product> findAll() throws SQLException;
 
+    Product findById(int id) throws SQLException;
+
     Product findProductById(int id) throws SQLException;
+
+    Product setAvailability(int product_id) throws SQLException;
 }

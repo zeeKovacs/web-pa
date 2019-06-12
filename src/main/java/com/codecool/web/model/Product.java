@@ -32,4 +32,8 @@ public class Product extends AbstractModel {
     public String getUnit() {
         return this.unit;
     }
+
+    public boolean getAvailability() {
+        return availability;
+    }
 }

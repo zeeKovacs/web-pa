@@ -14,6 +14,42 @@ public class DatabaseOrderDao extends AbstractDao implements OrderDao {
     }
 
     @Override
+    public Order confirmOrder(int order_id) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT confirm_order(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, order_id);
+            int returned_id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(returned_id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
+    public Order completeOrder(int order_id) throws SQLException {
+        boolean autoCommit = connection.getAutoCommit();
+        connection.setAutoCommit(false);
+        String sql = "SELECT complete_order(?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, order_id);
+            int returned_id = fetchGeneratedId(statement);
+            connection.commit();
+            return findById(returned_id);
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(autoCommit);
+        }
+    }
+
+    @Override
     public Order findById(int id) throws SQLException {
         String sql = "SELECT * from find_order_by_id(?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

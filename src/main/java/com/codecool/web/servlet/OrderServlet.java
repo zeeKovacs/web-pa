@@ -63,4 +63,24 @@ public class OrderServlet extends AbstractServlet {
             handleSqlError(resp, ex);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try (Connection connection = getConnection(req.getServletContext())) {
+            OrderDao orderDao = new DatabaseOrderDao(connection);
+            OrderService orderService = new SimpleOrderService(orderDao);
+
+            String option = req.getParameter("option");
+            int order_id = Integer.parseInt(req.getParameter("order-id"));
+            if (option.equals("confirm")) {
+                orderService.confirmOrder(order_id);
+            } else if (option.equals("complete")) {
+                orderService.completeOrder(order_id);
+            }
+
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (SQLException ex) {
+            handleSqlError(resp, ex);
+        }
+    }
 }

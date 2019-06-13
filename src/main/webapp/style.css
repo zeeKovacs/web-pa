@@ -8,10 +8,6 @@ body, html {
     font: normal 18pt 'Comfortaa', cursive;
 }
 
-:root {
-    --color: #000000;
-}
-
 a {
     text-decoration: none;
 }
@@ -21,6 +17,10 @@ p {
     padding: 14px;
     font-size: 48px;
     font-weight: bold;
+}
+
+form {
+    color: black;
 }
 
 input[type=submit], input[type = text], input[type = email], input[type = password], input[type = number] {

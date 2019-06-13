@@ -61,7 +61,7 @@ function fillProductsContent(products) {
 
     for (let i = 0; i < products.length; i++) {
         const product = products[i];
-        if (getUser().role === 'ADMIN') {
+        if (userExists() && getUser().role === 'ADMIN') {
             const pEl = document.createElement('p');
             pEl.textContent = 'Product: ' + product.name + ' Available: ' + product.availability;
 
